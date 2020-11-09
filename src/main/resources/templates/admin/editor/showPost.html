@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:form="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="language" content="english">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../../quill/katex.min.css" />
+
+    <link rel="stylesheet" href="../../quill/monokai-sublime.min.css" />
+
+    <link rel="stylesheet" href="../../quill/quill.snow.css" />
+    <div th:replace="Layout :: head"></div>
+    <style>
+        body > #standalone-container {
+            margin: 50px auto;
+            max-width: 720px;
+        }
+
+    </style>
+
+    <title>نمایش متن</title>
+    <script src="../../quill/highlight.min.js"></script>
+
+</head>
+<body>
+<div class="scroller">
+<section>
+    <div th:replace="Layout :: header(${loggedUser},${isAuth})"></div>
+</section>
+<div class="container-fluid scroller">
+
+    <div class="row">
+        <div class="col-md-2">
+
+            </div>
+        <div class="col-md-8  showPostBigContainer">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="viewHeader" id="title">تیتر :</h2>
+                    <h3 class="viewDescription" id="description"> </h3>
+
+                </div>
+            </div>
+            <div class="row newsHeader">
+                <div class="col-md-8"></div>
+                <div class="col-md-4">
+                    <span id="documentDate"></span>
+                </div>
+            </div>
+            <div class="row newsHeader">
+                <div class="col-md-8"></div>
+                <div class="col-md-4">
+                    <span>  گروه </span>
+                    <span id="documentGroup"></span>
+                    <span>   - توسط </span>
+                    <span id="documentOwner"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="standalone-container">
+                        <div id="editor-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row newsHeader">
+                <div class="col-md-1"></div>
+                <div class="col-md-3">
+                    <span>فایل های ضمیمه</span>
+                </div>
+                <div class="col-md-8"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-11">
+                    <table id="fileListRow">
+                    </table>
+                </div>
+            </div>
+
+            <div class="row newsHeader">
+                <div class="col-md-1"></div>
+                <div class="col-md-3">
+                    <span>نظرات اعضای گروه</span>
+                </div>
+                <div class="col-md-8"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10" id="commentListRow">
+
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <label for="commentText">نظر خود را ارسال کنید (حداکثر 256 کارکتر) : </label>
+                    <textarea id="commentText" rows="5" style="width:100%;"></textarea>
+                    <button class="button" value="ارسال نظر" id="submitComment">ارسال نظر</button>
+                    <button class="button" value="پاک شود" id="clearComment">پاک شود</button>
+
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+
+            <script src="../../quill/katex.min.js"></script>
+
+            <script src="../../quill/highlight.min.js"></script>
+
+            <script src="../../quill/quill.min.js"></script>
+
+
+        </div>
+        <div class="col-md-2">
+            <input type="hidden" id="documentId" th:if="${documentId}" th:value="${documentId}">
+        </div>
+    </div>
+
+</div>
+<section>
+    <div th:replace="Layout :: footer"></div>s
+</section>
+
+<script>
+    var tempQuill;
+    var quill = new Quill('#editor-container', {
+        modules: {
+            formula: true,
+            syntax: true,
+
+
+            toolbar:false
+        },
+        placeholder: 'Compose an epic...',
+        theme: 'snow',
+        //readOnly:true
+    });
+
+
+    $(document).ready(function(){
+        //clear comment textbox
+        $('#clearComment').click(function () {
+            $('#commentText').val("");
+        });
+
+        //save comments
+        $('#submitComment').click(function () {
+            // if textbox not empty
+            if($('#commentText').val()!=''){
+                $.ajax({
+                    url:"../../REST/editor/saveComment?documentId="+
+                        $('#documentId').val()+"&comment="+$('#commentText').val(),
+                    type:"POST",
+                    dataType:"json",
+                    contentType:"application/json",
+
+                    success:function(data){
+                        console.log(data.id);
+                        $('.statusBar').text(data.message);
+                        //$('#documentId').val(data.id);
+                        $('#documentIdUpload').val(data.id);
+                        console.log(data.id);
+                        showAlert(data.message,10000);
+                        // add new comment to view if return code is 200
+                        var documentDate2=(new Date(data.dateTime));
+                        if(data.code==200) {
+                            $('#commentListRow').append("<div class=\"row commentRow\">" +
+                                "                        <div class=\"col-md-12 commentTitle\">" + data.status + "</div>" +
+                                "                        <div class=\"col-md-12\">" + documentDate2.getHours() + ':' + documentDate2.getMinutes() + ' -- ' +date2convert(documentDate2)+ "</div>" +
+                                "                        <div class=\"col-md-12\">" + $('#commentText').val() + "</div>"
+                                +"<div class=\"col-md-12 deleteComment\" data-value=\""+data.id+"\" style=\"text-align: left;\"><i class=\"fas fa-trash-alt\" ></i></div>");
+
+                        }
+
+                    },
+                    error:function(xhr, ajaxOptions, thrownError) {
+                        console.log(xhr.status);
+                        console.log(thrownError);
+                        console.log("some error just happened");
+                        $('.statusBar').text("نوشته با خطا مواجه شده است");
+                        showAlert("نوشته با خطا مواجه شده است",10000);
+                    }
+                }).done(function(){
+                    $('#commentText').val("");
+                });
+            }
+        });
+
+        //load document
+        if($('#documentId').val()!=null && $('#documentId').val()!="")
+        {
+            //Get the content of document if saved
+            $.ajax({
+                url:"../../REST/editor/load?documentId="+$('#documentId').val(),
+                type:"POST",
+                dataType:"json",
+                contentType:"application/json",
+                success:function(){
+                    console.log("REST load success");
+                }
+
+            }).done(function(data) {
+                var receivedContent = data.documentContent;
+                console.log(JSON.parse(receivedContent));
+                quill.setContents(JSON.parse(receivedContent));
+                $('#title').text(data.title);
+                $('#description').text(data.description);
+                var documentDate = (new Date(data.editDate));
+                $('#documentDate').text('تاریخ سند : ' + documentDate.getHours() + ':' + documentDate.getMinutes() + '--' +date2convertReverse(documentDate));
+                $('#documentGroup').text(data.workGroup);
+                $('#documentOwner').text(data.documentOwner);
+                // if document comments is disable
+                if (data.allowComment == false) {
+
+                    $('#commentText').prop("disabled", true);
+                    $('#submitComment').prop("disabled", true);
+                }
+
+                //populate table of comments
+
+                data.comments.forEach(function(item,index){
+                    var documentDate2=(new Date(item.createDate));
+                    var eyeIcon="";
+                    if(item.enabled==false)
+                        eyeIcon="<i class=\"fas fa-eye-slash\" style='color:red;'></i>";
+                    else eyeIcon="<i class=\"fas fa-trash-alt\"></i>";
+                    if(item.owner==true)
+                        $('#commentListRow').append("<div class=\"row commentRow\">" +
+                            "                        <div class=\"col-md-12 commentTitle\">"+item.userFullName+"</div>" +
+                            "                        <div class=\"col-md-12\">"+documentDate2.getHours()+':'+documentDate2.getMinutes()+'--'+date2convert(documentDate2)+"</div>" +
+                            "                        <div class=\"col-md-12\">"+item.message+"</div>"
+                            +"<div class=\"col-md-12 deleteComment\" style=\"text-align: left;\" data-value=\""+item.id+"\">"+eyeIcon +"</div>");
+                    else
+                        $('#commentListRow').append("<div class=\"row commentRow\">" +
+                        "                        <div class=\"col-md-12 commentTitle\">"+item.userFullName+"</div>" +
+                        "                        <div class=\"col-md-12\">"+documentDate2.getHours()+':'+documentDate2.getMinutes()+'-'+date2convert(documentDate2)+'-'+documentDate2.getFullYear()+
+                        '/'+(documentDate2.getMonth()+1)+'/'+documentDate2.getDate()+"</div>" +
+                        "                        <div class=\"col-md-12\">"+item.message+"</div>");
+
+                });
+            });
+            //on click delete comment
+            $('#commentListRow').on("click",".fa-trash-alt",function(event){
+                console.log("file remove ENTERED");
+                console.log($(this).parent().attr('data-value'));
+                console.log("س"+$(this).parent());
+
+                event.preventDefault();
+                var isDone=$(this);
+                $.ajax({
+                    url:"../../REST/editor/disableComment?commentId="+$(this).parent().attr('data-value'),
+                    type:"POST",
+                    dataType:"json",
+                    contentType:"application/json",
+                    success:function(){
+
+                        console.log("REST disable comment");
+                    }
+
+                }).done(function(data){
+                    console.log(data.code);
+                    if(data.code!=400 && data.code!=500)
+                        var eyeIcon="<i class=\"fas fa-eye-slash\" style='color:red;'></i>";
+                        isDone.parent().append(eyeIcon);
+                        isDone.fadeOut();
+                });
+                console.log(isDone);
+
+
+            })
+            //on click eye comment
+            $('#commentListRow').on("click",".fa-eye-slash",function(event){
+                console.log("file eye ENTERED");
+                event.preventDefault();
+                var isDone=$(this);
+                $.ajax({
+                    url:"../../REST/editor/enableComment?commentId="+$(this).parent().attr('data-value'),
+                    type:"POST",
+                    dataType:"json",
+                    contentType:"application/json",
+                    success:function(){
+
+                        console.log("REST disable comment");
+                    }
+
+                }).done(function(data){
+                    console.log(data.code);
+                    if(data.code!=400 && data.code!=500)
+                        var eyeIcon="<i class=\"fas fa-trash-alt\"></i>";
+                    isDone.parent().append(eyeIcon);
+                    isDone.fadeOut();
+                });
+                console.log(isDone);
+
+
+            })
+            // Get document list of current document
+            $.ajax({
+                url:"../../admin/fileList?documentId="+$('#documentId').val(),
+                type:"POST",
+                dataType:"json",
+                contentType:"application/json",
+                success:function(){
+                    console.log("REST file load success");
+                }
+
+            }).done(function(data){
+                var receivedContent =data.message+data.status;
+                console.log(data);
+                data.forEach(function(item,index){
+                    $('#fileListRow').append("<tr><td> ( "+(index+1)+" ) </td><td><a href='../../download/file?fileId="+item.id+"'>"+item.name+"</a></td></tr>");
+                });
+
+                //quill.setContents(JSON.parse(receivedContent));
+                //$('#title').val(data.title)
+                //$('#description').val(data.description)
+                //console.log(data);
+            });
+        }
+
+
+    });
+
+        
+        quill.disable();
+
+    $("#title").attr("disabled", "disabled");
+    $("#description").attr("disabled", "disabled");
+
+</script>
+</div>
+</body>
+</html>

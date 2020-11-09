@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:form="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="language" content="english">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../../quill/katex.min.css" />
+    <link rel="stylesheet" href="../../quill/monokai-sublime.min.css" />
+
+    <link rel="stylesheet" href="../../quill/quill.snow.css" />
+    <div th:replace="Layout :: head"></div>
+    <style>
+        body > #standalone-container {
+            margin: 50px auto;
+            max-width: 720px;
+        }
+
+    </style>
+
+    <title>ویرایش متن</title>
+</head>
+<body class="scroller">
+<section>
+    <div th:replace="Layout :: header(${loggedUser},${isAuth})"></div>
+</section>
+<div class="container-fluid">
+    <div class="row saveDocumentHeader">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-8">
+            <div class=row style="background-color: rgb(236, 233, 233);margin-bottom: 20px;">
+                <div class="col-md-12">
+                   <b> <span>ویرایش اسناد</span></b>
+                 </div>
+                 
+             </div>
+            <div class=row style="background-color: rgb(236, 233, 233);margin-bottom: 20px;">
+                <div class="col-md-1">
+                    <span>عنوان </span>
+                 </div>
+                 <div class="col-md-4">
+                    <input id="title" type="text" value="سند جدید">
+                 </div>
+             </div>
+             <div class=row style="background-color: rgb(236, 233, 233);margin-bottom: 20px;">
+                <div class="col-md-1">
+                    <span>خلاصه  </span>
+                 </div>
+                 <div class="col-md-4">
+                    <input id="description" type="text">
+                 </div>
+             </div>
+             <div class=row style="background-color: rgb(236, 233, 233);margin-bottom: 20px;">
+                <div class="col-md-12">
+                    <span>متن سند : </span>
+                 </div>
+                 
+             </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 showPostBigContainer editPostBigContainer">
+            <div id="standalone-container">
+                <div id="toolbar-container">
+    <span class="ql-formats">
+      <select class="ql-font"></select>
+      <select class="ql-size"></select>
+    </span>
+                    <span class="ql-formats">
+      <button class="ql-bold"></button>
+      <button class="ql-italic"></button>
+      <button class="ql-underline"></button>
+      <button class="ql-strike"></button>
+    </span>
+                    <span class="ql-formats">
+      <select class="ql-color"></select>
+      <select class="ql-background"></select>
+    </span>
+                    <span class="ql-formats">
+      <button class="ql-script" value="sub"></button>
+      <button class="ql-script" value="super"></button>
+    </span>
+                    <span class="ql-formats">
+      <button class="ql-header" value="1"></button>
+      <button class="ql-header" value="2"></button>
+      <button class="ql-blockquote"></button>
+      <button class="ql-code-block"></button>
+    </span>
+                    <span class="ql-formats">
+      <button class="ql-list" value="ordered"></button>
+      <button class="ql-list" value="bullet"></button>
+      <button class="ql-indent" value="-1"></button>
+      <button class="ql-indent" value="+1"></button>
+    </span>
+                    <span class="ql-formats">
+      <button class="ql-direction" value="rtl"></button>
+      <select class="ql-align"></select>
+    </span>
+                    <span class="ql-formats">
+      <button class="ql-link"></button>
+      <button class="ql-image"></button>
+      <button class="ql-video"></button>
+      <button class="ql-formula"></button>
+    </span>
+                    <span class="ql-formats">
+      <button class="ql-clean"></button>
+    </span>
+                </div>
+                <div id="editor-container"></div>
+            </div>
+
+
+
+            <script src="../../quill/katex.min.js"></script>
+
+            <script src="../../quill/highlight.min.js"></script>
+
+            <script src="../../quill/quill.min.js"></script>
+
+
+        </div>
+        <div class="col-md-2">
+
+
+
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="row">
+                <span id="statusBarDown" class="statusBar"></span>
+            </div>
+            <div class="row editPostBottom">
+                <div class="col-md-5">
+                    <form method="POST" class="fr" enctype="multipart/form-data" id="fileUploadForm">
+                        <table>
+                            <tr>
+                                <td><form:label path="file">بارگزاری فایل  : </form:label></td>
+                                
+
+                            </tr>
+                            <tr>
+                                <td><form:label path="file"> (یک یا چند فایل )  </form:label></td>
+                            </tr>
+                            <tr>
+                                <td><input type="file" name="file" value="انتخاب فایل" id="upload"/></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="hidden" id="documentIdUpload" name="documentIdUpload" th:value="${documentId}">
+                                    <button id="uploadButton" type="submit">تایید فایل</button>
+                                </td>
+                            </tr>
+                        </table>
+
+                       
+
+                    </form>
+
+                    <script type="text/javascript">
+
+                        $(document).on('submit','.fr',function(e) {
+                            e.preventDefault();
+                            
+                            saveDoc(1);
+                            //$.when(saveDoc()).done(fileUpload());
+                            //$(document).ajaxStop(fileUpload());
+                            
+                        });
+                        function fileUpload(){
+                            // lock the button
+                            $('#uploadButton').prop('disabled','true');
+                            $('#uploadButton').text('در حال بارگزاری...');
+                            $('#uploadButton').css("color","#D3D3D3");
+                            setTimeout(function(){
+                                $('#uploadButton').prop('disabled',false);
+                                $('#uploadButton').text('تایید فایل');
+
+                                $('#uploadButton').css("color","#000000");
+                                    
+                            },2000);
+                            //regx for testing name of file to dont be in persian
+                            var reg = /[\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufc3f]|[\ufe70-\ufefc]/i;
+
+
+
+
+                            //find file name
+                            var filename="";
+                            var fullPath = document.getElementById('upload').value;
+                            if (fullPath) {
+                                var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+                                 filename = fullPath.substring(startIndex);
+                                if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                                    filename = filename.substring(1);
+                                }
+
+                            }
+
+                            if($('#documentIdUpload')==null || $('#documentIdUpload').val()==0){
+                                alert('hey');
+                                $('.statusBar').text('ابتدا فایل را ذخیره کنید');
+                            }else if(reg.test(filename)) {
+                                $('.statusBar').text('نام فایل نباید فارسی باشد');
+                                showAlert("نام فایل نباید فارسی باشد",10000);
+                                return;
+                            }
+
+                            var form = $('#fileUploadForm')[0];
+                            var data = new FormData(form);
+                           
+                            $.ajax({
+                                url : '../../admin/uploadFile',
+                                enctype:'multipart/form-data',
+                                data : data,
+                                processData : false,
+                                //dataType:"json",
+                                //contentType:"application/json",
+                                contentType : false,
+                                type : 'POST',
+                                success : function(data) {
+                                    //console.log("SUCCESS : ", data);
+
+                                    //$('#fileListRow').append("<p>"+data+"</p>");
+                                    if(data.name!=null)
+                                    {
+                                        $('#filesTable').append('<tr class="fileTableRow">'
+                                            +'<th></th>'
+                                            +'<th>'+data.name+'</th>'
+                                            +'<th><a data-value=\"'+data.id+'\"  class="fileRemoveLink"><i class="far fa-trash-alt" style="color:red;"></i></a></th>'
+                                            +'</tr>');
+
+
+
+                                        showStatus("فایل با موفقیت بارگزاری شد",10000);
+                                        $('.statusBar').text('فایل با موفقیت بارگزاری شد');
+                                    }else{
+                                        showStatus(10000,'فایل بار گزاری نشد،فایل را صحیح انتخاب کنید');
+                                        $('.statusBar').text('فایل بار گزاری نشد،فایل را صحیح انتخاب کنید');
+                                    }
+                                },
+                                error : function(err) {
+                                    showAlert("خطا : فایل بارگذاری نشد",10000);
+                                    $('.statusBar').text('خطا : فایل بارگذاری نشد');
+                                    console.log("File upload : "+err);
+                                }
+                            }).done(function(){
+                                //$('#fileListRow').append("<p>"+data.name+"</p>");
+                            });
+                            
+                            $('#your_target_input').attr('value', '');
+                            $('#fileUploadForm').val('').clone(true); 
+                            
+                        }
+
+                    </script>
+                </div>
+                <div class="col-md-7" style="border-right:1px solid lightGray;">
+                   
+                    <table id="filesTable">
+                       <tr  style="color:gray;border-bottom: solid gray 1px;">
+                            <th> فایل های بارگزاری شده</th>
+                       </tr> 
+
+                    </table>
+                    <input id="documentId" th:value="${documentId} ?: '0'" type="hidden">
+                </div>
+            </div>
+            <div class="row editPostBottom">
+               
+                        <div class="col-md-6">
+
+                            <div class="row bottom-button" >
+                                <div class="col-md-4">
+                                    <span> آیکون نمایشی سند :</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <select name="sample" id="icon" class="fa" style="font-size:17px">
+                                        <option value="far fa-file">انتخاب آیکون سند</option>
+                                        <option class="icon-size" value="fas fa-passport">&#xf5ab;</option>
+                                        <option class="icon-size" value="far fa-file-word">&#xf1c2;</option>
+                                        <option class="icon-size" value="fas fa-file-upload">&#xf574;</option>
+                                        <option class="icon-size" value="fas fa-file-medical">&#xf477;</option>
+                                        <option class="icon-size" value="fas fa-file-download">&#xf56d;</option>
+                                        <option class="icon-size" value="fas file-medical-alt">&#xf478;</option>
+                                        <option class="icon-size" value="far fa-file-image">&#xf1c5;</option>
+                                        <option class="icon-size" value="far fa-file">&#xf15b;</option>
+                                        <option class="icon-size" value="far fa-file-alt">&#xf15c;</option>
+                                        <option class="icon-size" value="far fa-file-audio">&#xf1c7;</option>
+                                        <option class="icon-size" value="far fa-file-pdf">&#xf1c1;</option>
+                                        <option class="icon-size" value="far fa-file-powerpoint">&#xf1c4;</option>
+                                        <option class="icon-size" value="far fa-file-excel">&#xf1c3;</option>
+                                        <option class="icon-size" value="far fa-file-code">&#xf1c9;</option>
+                                        <option class="icon-size" value="fas fa-file-import">&#xf56f;</option>
+                                        <option class="icon-size" value="fas fa-book">&#xf02d;</option>
+                                        <option class="icon-size" value="fas fa-print">&#xf02f;</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row bottom-button"  th:if="${workGroupsList!= null and #lists.size(workGroupsList) > 1}"  >
+                                <div class="col-md-4">
+                                    گروه ارسالی سند : 
+                                </div>
+                                <div class="col-md-6">
+                                    <select  id="workGroupID">
+                                        <option value="0">انتخاب گروه سند</option>
+                                        <option th:each="workGroup : ${workGroupsList}" th:value="${workGroup.id}" th:text="${workGroup.name}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+
+                           
+                            <input th:if="${workGroupsList!= null and #lists.size(workGroupsList) < 2}" th:each="workGroup : ${workGroupsList}" th:value="${workGroup.id}" type="hidden" id="workgroupSingle">
+                            <input th:if="${workGroupsList== null }" value="0" type="hidden" id="workgroupSingle">
+                            
+                            <div class="row bottom-button" id="directPersonHolder"  >
+                                <div class="col-md-4">
+                                    دریافت کننده سند : 
+                                </div>
+                                <div class="col-md-6">
+                                    <select id="directPerson">
+                                        <option value="0"> </option>
+                                    </select>
+                                </div>
+                            </div>    
+                            
+                            <div class="row bottom-button"   id="hierarchyHolder" >
+                                <div class="col-md-4">
+                                    انتخاب زیرشاخه : 
+                                </div>
+                                <div class="col-md-6">
+                                    <select id="hierarchy">
+                                        <option value="0">انتخاب زیرشاخه</option>
+                                    </select>
+                                </div>
+                            </div> 
+                            
+                          
+                        </div>
+                    
+                        
+                        <div class="col-md-6" style="direction: ltr;border-right:black;">
+                            <input type="button" id="getContentQuill" value="ذخیره سند" style="color:red">
+                            <input type="button" id="CLEAR" value="پاک کردن متن">
+                        </div>
+                   
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
+<section>
+    <div th:replace="Layout :: footer"></div>
+</section>
+
+<script>
+    var tempQuill;
+
+    // Add fonts to whitelist
+    var Font = Quill.import('formats/font');
+    // We do not add Aref Ruqaa since it is the default
+    Font.whitelist = ['Tahoma', 'Yekan'];
+    Quill.register(Font, true);
+
+    var quill = new Quill('#editor-container', {
+        modules: {
+            formula: true,
+            syntax: true,
+            toolbar: '#toolbar-container'
+        },
+        placeholder: 'متن خود را وارد کنید ...',
+        theme: 'snow',
+        //readOnly:true
+    });
+    quill.format('direction', 'rtl');
+    quill.format('align', 'right');
+    function saveDoc(isUpload){
+        console.log("save button was pressed");
+        $(this).prop('disabled',true);
+        console.log("the button is locked");
+        $('#statusBarDown').val("....درحال ذخیره سازی");
+        $('#getContentQuill').css("color","#D3D3D3");
+        $('#getContentQuill').val('....درحال ذخیره سازی');
+        console.log("showing the label to wait");
+
+        tempQuill=quill.getContents();
+        var workGroupTemp=0;
+        //check if workGroup is single or not
+        
+        if($("#workGroupID").length )
+            workGroupTemp=$("#workGroupID").children("option:selected").val();
+        else if($('#workgroupSingle').length)
+            workGroupTemp= $('#workgroupSingle').val();
+        
+        
+        console.log(workGroupTemp);
+        $.ajax({
+           url:"../../REST/editor/save" ,
+            type:"POST",
+            dataType:"json",
+            contentType:"application/json",
+            data:JSON.stringify({
+                "id":$('#documentId').val(),
+                "title":$('#title').val(),
+                "description":$('#description').val()+"###"+workGroupTemp,
+                "documentContent":JSON.stringify(tempQuill),
+                "cssClass":$('#icon').val(),
+                "reviewStep":$('#directPerson').val(),
+                "securityLevel":$('#hierarchy').val()
+
+
+            }),
+            success:function(data){
+               console.log(data.id);
+               $('.statusBar').text(data.message);
+               $('#documentId').val(data.id);
+               $('#documentIdUpload').val(data.id);
+               console.log(data.id);
+               showAlert(data.message,10000);
+               
+            },
+            error:function(xhr, ajaxOptions, thrownError) {
+                console.log(xhr.status);
+                console.log(thrownError);
+               console.log("some error just happened");
+                $('.statusBar').text("نوشته با خطا مواجه شده است");
+                showAlert("نوشته با خطا مواجه شده است",10000);
+            }
+        }).done(function()
+        {
+            if(isUpload==1)
+                fileUpload();
+        });
+        console.log("timeOut for disable=false");
+        setTimeout(function(){
+            $('#getContentQuill').prop('disabled',false);
+            $('#getContentQuill').val('ذخیره سند');
+            $('#getContentQuill').css("color","red");
+        },2000)
+        
+
+    }
+    $('#getContentQuill').click(saveDoc);
+    $('#CLEAR').click(function(){
+
+       $('#description').val("");
+       $('#title').val("");
+        quill.setContents(
+            [
+
+                {insert:'\n'}
+            ]);
+    });
+
+    $(document).ready(function(){
+        // check if one group is exists load data automatically
+        if(!$('workGroupId').length){
+            groupClicked();
+        }
+
+        if($('#documentId').val()!=null && $('#documentId').val()!="" && $('#documentId').val()!="0")
+        {
+            //Get the content of document if saved
+            $.ajax({
+                url:"../../REST/editor/load?documentId="+$('#documentId').val(),
+                type:"POST",
+                dataType:"json",
+                contentType:"application/json",
+                success:function(){
+
+                    showStatus("سند با موفقیت بارگذاری شد",10000);
+
+                },
+                error:function(xhr, ajaxOptions, thrownError) {
+                    showAlert('سند یافت نشد');
+                }
+
+            }).done(function(data){
+                var receivedContent =data.documentContent;
+                console.log(JSON.parse(receivedContent));
+                quill.setContents(JSON.parse(receivedContent));
+                $('#title').val(data.title)
+                $('#description').val(data.description)
+                //console.log(data);
+            });
+            // Get document list of current document
+            $.ajax({
+                url:"../../admin/fileList?documentId="+$('#documentId').val(),
+                type:"POST",
+                dataType:"json",
+                contentType:"application/json",
+                success:function(){
+                    console.log("REST FILE LIST SUCCESSFUL");
+                }
+
+            }).done(function(data){
+                var receivedContent =data.message+data.status;
+                console.log(data.length);
+                for(var ii=0;ii<data.length;ii++)
+                {
+                    //$('#fileListRow').append("<p>" +  + "</p>");
+                    $('#filesTable').append('<tr class="fileTableRow">'
+                            +'<td></td>'
+                            +'<td>'+(data[ii].name)+'</td>'
+                            +'<td><a data-value=\"'+(data[ii].id)+'\" class="fileRemoveLink" ><i class="far fa-trash-alt" style="color:red;"></i></a></td>'+
+                        '</tr>');
+                }
+                //quill.setContents(JSON.parse(receivedContent));
+                //$('#title').val(data.title)
+                //$('#description').val(data.description)
+                //console.log(data);
+            });
+        }
+
+
+    });
+    $('#filesTable').on("click",".fileRemoveLink",function(event){
+        console.log("file remove ENTERED");
+            event.preventDefault();
+            //mark as a ready to remove row of table
+        $(this).closest('tr').attr("data-readyToRemove","1");
+        $.ajax({
+            url:"../../admin/fileRemove?id="+$(this).attr("data-value"),
+            type:"POST",
+            dataType:"json",
+            contentType:"application/json",
+            success:function(){
+                $('[data-readyToRemove=1]').fadeOut();
+            },
+            error:function(xhr, ajaxOptions, thrownError) {
+                showAlert('خطا در پاک کردن فایل');
+            }
+        }).done(function(data){
+            console.log(data);
+        });
+    });
+
+    $('#workGroupID').click(groupClicked);
+    function groupClicked(){
+        console.log('option clicked');
+        
+        var groupIdNumber=0;
+
+        if($('#workGroupID').length)
+            groupIdNumber=$('#workGroupID').val();
+        else
+            groupIdNumber=$('#workgroupSingle').val();
+
+        console.log(groupIdNumber+' % ');
+        if(groupIdNumber!=null && groupIdNumber!=0)
+        {
+            $.ajax({
+                url:"../../REST/admin/selectPerson?id="+groupIdNumber,
+                type:"POST",
+                dataType:"json",
+                contentType:"application/json",
+                success:function(){
+
+                },
+                error:function(xhr, ajaxOptions, thrownError) {
+                    showAlert('خطا در بازیابی گروه ');
+                }
+            }).done(function(data){
+                $('#directPerson').empty();
+                if(data.length>1){
+                    $('#directPersonHolder').show();
+                    for(var ii=0;ii<data.length;ii++)
+                    {
+                        //$('#fileListRow').append("<p>" +  + "</p>");
+                        $('#directPerson').append(
+                            '<option value="'+data[ii].key+'">'+data[ii].value+'</option>'
+                        );
+
+                    }
+                }else{ $('#directPersonHolder').hide();}
+            });
+            
+            $.ajax({
+                url:"../../REST/admin/selectHierarchy?id="+groupIdNumber,
+                type:"POST",
+                dataType:"json",
+                contentType:"application/json",
+                success:function(){
+
+                },
+                error:function(xhr, ajaxOptions, thrownError) {
+                    showAlert('خطا در بازیابی شاخه ');
+                }
+            }).done(function(data){
+                $('#hierarchy').empty();
+                
+                if(data.length>1){
+                    $('#hierarchyHolder').show();
+                    for(var ii=0;ii<data.length;ii++)
+                    {
+                        //$('#fileListRow').append("<p>" +  + "</p>");
+                        $('#hierarchy').append(
+                            '<option value="'+data[ii].key+'">'+data[ii].value+'</option>'
+                        );
+
+                    }
+                }else{$('#hierarchyHolder').hide();}
+            });
+        }else{$('#hierarchyHolder').hide();$('#directPersonHolder').hide();}
+    }
+</script>
+</body>
+</html>

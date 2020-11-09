@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:replace="Layout :: head"></div>
+    <title>Title</title>
+</head>
+<body>
+<section>
+    <div th:replace="Layout :: header(${loggedUser},${isAuth})"></div>
+</section>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="newsHeader"><h1>تغییر رمز عبور</h1></div>
+                </div>
+                <div class="col-sm-12">
+                        <div th:if="${error== false}" class="alert alert-success"><span th:text="${errorMessage}"></span></div>
+                        <div th:unless="${error == false}" class="alert alert-danger"><span th:text="${errorMessage}"></span></div>
+                </div>
+            </div>
+            <form action="#" method="post" th:action="@{/admin/editUserPost}" th:object="${obj}">
+                <div class="inlineBlock">
+                <div class="form-group">
+                    <label for="username">نام کاربری</label>
+                    <input th:readonly="${isAdmin==true}" class="form-control" type="text" id="username" name="username" th:field="*{username}">
+                    <p th:if="${#fields.hasErrors('username')}"
+                       th:errors="*{username}"> error on namex</p>
+                </div>
+                <div class="form-group">
+                    <label for="firstName">نام</label>
+                    <input th:readonly="${isAdmin==true}" class="form-control" type="text" id="firstName" name="firstName" th:field="*{firstName}">
+                    <p th:if="${#fields.hasErrors('firstName')}"
+                       th:errors="*{firstName}"> error on firstName</p>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">نام خانوادگی</label>
+                    <input th:readonly="${isAdmin==true}" class="form-control" type="text" id="lastName" name="lastName" th:field="*{lastName}">
+                    <p th:if="${#fields.hasErrors('lastName')}"
+                       th:errors="*{lastName}"> error on lastName</p>
+                </div>
+                <div class="form-group">
+                    <label for="email">ایمیل</label>
+                    <input  th:readonly="${isAdmin==true}" class="form-control" type="text" id="email" name="email" th:field="*{email}">
+                    <p th:if="${#fields.hasErrors('email')}"
+                       th:errors="*{email}"> error on email</p>
+                </div>
+                <div class="form-group">
+                    <label for="password">رمز عبور جدید</label>
+                    <input class="form-control" type="password" id="password" name="password" th:field="*{password}">
+                    <p th:if="${#fields.hasErrors('password')}"
+                       th:errors="*{password}"> error on password</p>
+                </div>
+                    <input name="id" type="hidden" th:field="*{id}">
+                <input class="form-control" type="submit" value="ذخیره" >
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+<section>
+    <div th:replace="Layout :: footer"></div>s
+</section>
+</body>
+</html>

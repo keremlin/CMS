@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:replace="Layout :: head"></div>
+    <title th:text="${pageTitle}">this is title</title>
+</head>
+<body>
+
+    <div th:replace="Layout :: header(${loggedUser},${isAuth})"></div>
+
+    <div class="container-fluid minHeight">
+        <div class="row admin-icon">
+            <div class="col-md-2"></div>
+            <div class="col-md-2" th:if="${isAdmin==true}"><a th:href="@{../admin/groupManagement?ownerId=-1}"><div class="admin-icon-container enabledLink"><div><i class="fas fa-users"></i></div><spam>مدیریت گروه </spam></div></a></div>
+            <div class="col-md-2" th:if="${isAdmin==false}"><div class="admin-icon-container disabledLink"><div><i class="fas fa-users"></i></div><spam>مدیریت گروه </spam></div></div>
+            <div class="col-md-2" ><a th:href="@{../admin/documentManagement}"><div class="admin-icon-container enabledLink"><div><i class="far fa-file-excel"></i></div><span>اسناد</span></div></a></div>
+            <div class="col-md-2" th:if="${isAdmin==true}"><a th:href="@{../admin/userManager}"><div class="admin-icon-container enabledLink"><div><i class="fas fa-user-edit"></i></div><span>مدیریت کاربران</span></div></a></div>
+            <div class="col-md-2" th:if="${isAdmin==false}"><div class="admin-icon-container disabledLink"><div><i class="fas fa-user-edit"></i></div><span>مدیریت کاربران</span></div></div>
+            <div class="col-md-2" th:if="${isAdmin==true}"><a th:href="@{../admin/userSetting}"><div class="admin-icon-container enabledLink"><div><i class="fas fa-users-cog"></i></div><span>تنظیمات کاربران</span></div></a></div>
+            <div class="col-md-2" th:if="${isAdmin==false}"><div class="admin-icon-container disabledLink"><div><i class="fas fa-users-cog"></i></div><span>تنظیمات کاربران</span></div></div>
+            <div class="col-md-2"></div>
+        </div>
+        <div class="row admin-icon">
+            <div class="col-md-2"></div>
+            <div class="col-md-2"><a th:href="@{../admin/editUser?id=-1}"><div class="admin-icon-container enabledLink"><div><i class="fas fa-key"></i></div><spam>تغییر رمز عبور</spam></div></a></div>
+            <div class="col-md-2"><div class="admin-icon-container disabledLink"><div><i class="fas fa-sliders-h "></i></div><spam>تنظیمات</spam></div></div>
+            <div class="col-md-2" th:if="${isAmar==true}"><a th:href="@{../admin/fileManagement}"><div class="admin-icon-container enabledLink"><div><i class="far fa-hdd"></i></div><spam>مدیریت گزارش</spam></div></a></div>
+            <div class="col-md-2" th:if="${isAmar==false}"><div class="admin-icon-container disabledLink"><div><i class="far fa-hdd"></i></div><spam>مدیریت فایل</spam></div></div>
+            <div class="col-md-2" th:if="${isAdmin==true}"><a th:href="@{../admin/linkerManagement}"><div class="admin-icon-container enabledLink"><div><i class="fas fa-link"></i></div><spam>مدیریت لینک</spam></div></a></div>
+            <div class="col-md-2" th:if="${isAdmin==false}"><div class="admin-icon-container disabledLink"><div><i class="fas fa-link"></i></div><spam>مدیریت لینک</spam></div></div>
+            <div class="col-md-2"></div>
+        </div>
+        <!--
+        <div th:if="${allUsers!=null}" class="row">
+            <div class="col-md-2">
+                <div><a  href="../admin/addUser"><i class="far fa-plus-square" style="color:limegreen;"></i>کاربر جدید</a></div>
+            </div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table id="userTable"  class="tables table-striped adminTable">
+                            <tr>
+                                <th>نام کاربری</th>
+
+                                <th>وضعیت</th>
+                                <th>نام خانوادگی</th>
+                                <th>نام</th>
+                                <th>نقش</th>
+                                <th>عملیات</th>
+                            </tr>
+                            <tr th:if="${isEmpty}">
+                                <td colspan="2"> کاربری وجود ندارد </td>
+                            </tr>
+                            <tr th:each="user : ${allUsers}">
+                                <td><span th:text="${user.username}"> Title </span></td>
+
+                                <td><span th:text="${user.enabled}"> وضعیت </span></td>
+                                <td><span th:text="${user.lastName}"> فامیل </span></td>
+                                <td><span th:text="${user.firstName}">نام </span></td>
+                                <td><span th:text="${user.roleName}">نقش</span></td>
+
+
+
+                                <td>
+                                    <a th:href="@{../admin/removeUser(id=${user.vmId})}"><i class="fas fa-trash-alt" style="color:red;"></i></a>
+                                    <a th:href="@{../admin/editUser(id=${user.vmId})}"><i class="fas fa-user-edit" style="color:green;"></i></a>
+                                    <a th:href="@{../admin/bannUser(id=${user.vmId})}"><i class="fas fa-ban" style="color:#e6b800;"></i></a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-3">
+                        <div id="userIndexDiv"></div>
+                       <input type="text" id="currentUserPage" style="border:none;color:#75715e">
+                        <input type="hidden" id="userAllPages" th:value="${usersAllPages}">
+
+
+                    </div>
+                    <div class="col-md-5"></div>
+                </div>
+
+            </div>
+            <div class="col-md-2">
+
+            </div>
+        </div>
+        <div th:if="${roleList!=null}" class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <table  class="tables table-striped adminTable">
+                    <tr>
+                        <th>نام</th>
+                        <th>نقش</th>
+                        <th>عملیات</th>
+                    </tr>
+                    <tr th:each="role :${roleList}">
+                        <td><span th:text="${role.name}"></span></td>
+                        <td><span th:text="${role.name}"></span></td>
+
+                        <td><i class="fas fa-trash-alt" style="color:red;"></i> <i class="fas fa-user-edit" style="color:green;"></i> <i class="fas fa-ban" style="color:#e6b800;"></i></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+<div th:if="${workGroupList!=null}" class="row">
+    <div class="col-md-2"><div><a href="../admin/addWorkGroup"><i class="far fa-plus-square" style="color:limegreen;"></i>گروه کاری جدید</a></div></div>
+    <div class="col-md-8">
+        <table  class="tables table-striped adminTable">
+            <tr>
+                <th>نام</th>
+                <th>توضیحات</th>
+                <th>مدیر</th>
+                <th>اعضا</th>
+                <th>وضعیت</th>
+                <th>عملیات</th>
+            </tr>
+            <tr th:each="workGroup :${workGroupList}">
+                <td><span th:text="${workGroup.name}">name</span></td>
+                <td><span th:text="${workGroup.description}">description</span></td>
+                <td><span th:text="${workGroup.owner}">owner</span></td>
+                <td><span th:text="${workGroup.members}">اعضا</span></td>
+                <td><span th:text="${workGroup.enabled}">وضعیت</span> </td>
+                <td>
+                    <a th:href="@{../admin/removeWorkGroup(id=${workGroup.id})}"><i class="fas fa-trash-alt" style="color:red;"></i></a>
+                    <a th:href="@{../admin/editWorkGroup(id=${workGroup.id})}"><i class="fas fa-user-plus" style="color:green;"></i></a>
+                    <a th:href="@{../admin/bannWorkGroup(id=${workGroup.id})}"><i class="fas fa-ban" style="color:#e6b800;"></i></a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+    <div class="row">
+        <div class="col-md-2"><a href="../admin/editor/editPost?documentId=0"><i class="far fa-plus-square" style="color:limegreen;"></i>سند جدید</a> </div>
+        <div class="col-md-8">
+            <row>
+                <div class="col-md-12">
+                    <table class="tables table-striped adminTable" id="documentTable">
+                        <tr>
+                            <th>تیتر</th>
+                            <th>ایجاد کننده</th>
+                            <th>زمان ایجاد</th>
+                            <th>آخرین تغییر</th>
+                            <th>خلاصه</th>
+                            <th>گروه کاری</th>
+                            <th>وضعیت</th>
+                            <th>عملیات</th>
+                        </tr>
+                        <tr th:each="document : ${documentsList}">
+                            <td><span th:text="${document.title}">title</span></td>
+                            <td><span th:text="${document.owner}">owner</span></td>
+                            <td><span th:text="${document.createDate}">createDate</span></td>
+                            <td><span th:text="${document.editDate}">editDate</span></td>
+                            <td><span th:text="${document.description}">desc</span> </td>
+                            <td><span th:text="${document.workGroups}">workGroup</span> </td>
+                            <td><span th:text="${document.status}">Status</span> </td>
+
+                            <td>
+                                <a th:href="@{../admin/editor/deletePost(documentId=${document.id})}"><i class="fas fa-trash-alt" style="color:red;"></i></a>
+                                <a th:href="@{../admin/editor/addWorkGroupToPost(documentId=${document.id})}"><i class="fas fa-user-plus" style="color:green;"></i></a>
+                                <a th:href="@{../admin/editor/banPost(documentId=${document.id})}"><i class="fas fa-ban" style="color:#e6b800;"></i></a>
+                                <a th:href="@{../admin/editor/editPost(documentId=${document.id})}"><i class="far fa-edit" style="color:#125687;"></i></a>
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </row>
+            <row>
+                <div class="col-md-4" ></div>
+                <div class="col-md-3">
+
+                    <input type="hidden" id="allPages" th:value="${documentAllPages}">
+                    <div id="#pageNumbers"></div>
+                    <div id="pageIndexer"></div>
+                    <input type="text" id="currentPage"  value="1" style="border:none;color:#75715e"/>
+                </div>
+                <div class="col-md-4"></div>
+            </row>
+
+        </div>
+        <div class="col-md-2">
+
+
+        </div>-->
+    </div>
+
+<section>
+    <div th:replace="Layout :: footer"></div>
+
+</section>
+<!--<script>
+    $(document).ready(function() {
+
+        for(var pageIndex=0;pageIndex<$("#allPages").val();pageIndex++){
+            $("#pageIndexer").append(
+                "<span>[<a href='nextPage' class='pageIndexes'> "+(pageIndex+1)+" </a>]</span>"
+            );
+        }
+
+        for(var userPageIndex=0;userPageIndex<$("#userAllPages").val();userPageIndex++){
+            $("#userIndexDiv").append(
+                "<span>[<a href='nextPage' class='userPageIndexes'> "+(userPageIndex+1)+" </a>]</span>"
+            );
+        }
+
+        $(".userPageIndexes").click(function (event) {
+            //Get the content of document if saved
+            event.preventDefault();
+            var nextPage=parseInt($(this).text())-1;
+
+            $.ajax({
+                url: "../REST/admin/getUserNextPage?pageNumber="+nextPage,//+ $('#documentId').text(),
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                success: function () {
+                    console.log("User REST load success");
+                }
+
+            }).done(function (data) {
+                $("#userTable").find("tr:gt(0)").remove();
+                data.forEach(function(item,index){
+
+                    console.log(item);
+                    $('#currentUserPage').val('صفحه'+(item.pageNumber+1));
+                    $("#userTable").append(
+                        "<tr>" +
+                        "<td>"+item.username+"</td>" +
+                        "<td>"+item.enabled+"</td>" +
+                       "<td>"+item.lastName+"</td>" +
+                        "<td>"+item.firstName+"</td>" +
+                        "<td>"+item.roleName+"</td>" +
+                        "<td>" +
+                        '<a href=\"../admin/removeUser?id='+item.vmId+'\"><i class=\"fas fa-trash-alt\" style=\"color:red;\"></i></a>' +
+                        '<a href=\"../admin/editUser?id='+item.vmId+'\"><i class="fas fa-user-edit" style="color:green;"></i></a>'+
+                        '<a href=\"../admin/bannUser?id='+item.vmId+'\"><i class="fas fa-ban" style="color:#e6b800;"></i></a>'+
+                        "</td>" +
+                        "</tr>"
+                    );
+                });
+
+            });
+        });
+
+        $(".pageIndexes").click(function (event) {
+            //Get the content of document if saved
+            event.preventDefault();
+            var nextPage=parseInt($(this).text())-1;
+
+            $.ajax({
+                url: "../REST/admin/getNextPage?pageNumber="+nextPage,//+ $('#documentId').text(),
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                success: function () {
+                    console.log("REST load success");
+                }
+
+            }).done(function (data) {
+                $("#documentTable").find("tr:gt(0)").remove();
+                data.forEach(function(item,index){
+                    var date1=new Date(item.createDate);
+                    var date2=new Date(item.editDate);
+
+                    $('#currentPage').val('صفحه'+(item.pageNumber+1));
+                    $("#documentTable").append(
+                        "<tr>" +
+                        "<td>"+item.title+"</td>" +
+                        "<td>"+item.owner+"</td>" +
+                        "<td>"+(date1.getMonth() + 1) + '/' + date1.getDate() + '/' +  date1.getFullYear()+" "+date1.getHours()+":"+date1.getMinutes()+":"+date1.getSeconds()+"</td>" +
+                        "<td>"+(date2.getMonth() + 1) + '/' + date2.getDate() + '/' +  date2.getFullYear()+" "+date2.getHours()+":"+date2.getMinutes()+":"+date2.getSeconds()+"</td>" +
+                        "<td>"+item.description+"</td>" +
+                        "<td>"+item.workGroups+"</td>" +
+                        "<td>"+item.status+"</td>" +
+                        "<td>" +
+                        '<a href=\"../admin/editor/deletePost?documentId='+item.id+'\"><i class=\"fas fa-trash-alt\" style=\"color:red;\"></i></a>' +
+                        '<a href=\"../admin/editor/addWorkGroupToPost?documentId='+item.id+'\"><i class="fas fa-user-plus" style="color:green;"></i></a>'+
+                        '<a href=\"../admin/editor/banPost?documentId='+item.id+'\"><i class="fas fa-ban" style="color:#e6b800;"></i></a>'+
+                        '<a href=\"../admin/editor/editPost?documentId='+item.id+'\"><i class="far fa-edit" style="color:#125687;"></i></a>'+
+                        "</td>" +
+                        "</tr>"
+                    );
+                });
+
+            });
+        });
+    });
+</script>-->
+</body>
+</html>

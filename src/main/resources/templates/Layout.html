@@ -1,0 +1,94 @@
+<!DOCTYPE html >
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+
+</head>
+<body>
+
+<th:block th:fragment="head" th:with="domain=''">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link th:href="@{${domain}+'/webjars/bootstrap/4.3.1/css/bootstrap.min.css'}" rel="stylesheet">
+    <!--<link href="/CSS/site.css" rel="stylesheet">-->
+    <link th:href="@{${domain}+'/CSS/site.css'}" rel="stylesheet">
+    <link th:href="@{${domain}+'/CSS/font.css'}" rel="stylesheet">
+    <link th:href="@{${domain}+'/webjars/font-awesome/5.7.2/css/all.css'}" rel="stylesheet">
+
+    <script th:src="@{${domain}+'/webjars/jquery/3.3.1/jquery.min.js'}" ></script>
+    <script th:src="@{${domain}+'/webjars/jquery/3.3.1/jquery.min.js'}" ></script>
+    <script th:src="@{${domain}+'/js/jquery.validate.min.js'}" ></script>
+    <script th:src="@{${domain}+'/js/script.js'}" ></script>
+    <script th:src="@{${domain}+'/js/jalali.js'}" ></script>
+    <script th:src="@{${domain}+'/webjars/bootstrap/4.3.1/js/bootstrap.min.js'}"></script>
+
+</th:block>
+
+<div th:fragment="header (user,isAuth)" th:with="domain=''">
+    <nav class="backg navbar navbar-expand-lg navbar-dark" style="background-color: #125687;" >
+
+    <a class="navbar-brand" href="#"><img th:src="@{${domain}+'/images/FooterLogo.png'}" src=""></a>
+    <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+    >
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto fa-ul">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{${domain}+'/'}"><i class="fas fa-home fa-xs fa-margin"></i>خانه <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+               <a  class="nav-link" th:href="@{${domain}+'/login'}" th:if="${isAuth=='F'}"><i class="fas fa-user fa-xs fa-margin"></i>ورود</a>
+                <a class="nav-link" th:href="@{${domain}+'/logout'}" th:unless="${isAuth=='F'}"><i class="fas fa-user fa-xs fa-margin"></i>خروج</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link"  th:href="@{${domain}+'/'}"><i class="fas fa-plus-square fa-xs fa-margin"></i>اخبار</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{${domain}+'/admin/'}" th:if="${user=='anonymousUser'}" ><i class="fas fa-sign-in-alt fa-xs fa-margin"></i>کاربر مهمان</a>
+                <a class="nav-link" th:href="@{${domain}+'/admin/'}" th:unless="${user=='anonymousUser'}" th:text="${user}"><i class="fas fa-sign-in-alt fa-xs fa-margin"></i>کاربر</a>
+
+            </li>
+
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input
+                    class="form-control mr-sm-2"
+                    type="search"
+                    placeholder="جستجو"
+                    aria-label="Search"
+                    hidden="true"
+            />
+            <button
+                    class="btn btn-outline-success my-2 my-sm-0"
+                    type="submit"
+                    hidden="true"
+            >
+                جستجو
+            </button>
+        </form>
+    </div>
+    </nav>
+    </div>
+
+
+<footer>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 footerbg">
+                <div class=""><p>سازمان ثبت احوال کشور-گروه امنیت مرکز داده</p></div>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

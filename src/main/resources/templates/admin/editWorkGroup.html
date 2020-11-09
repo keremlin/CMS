@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:replace="Layout :: head"></div>
+    <title>اضافه کردن کاربر</title>
+</head>
+
+<section>
+    <div th:replace="Layout :: header(${loggedUser},${isAuth})"></div>
+</section>
+<div class="minHeight">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <span>لیست اشخاص قابل اضافه شدن</span>
+        </div>
+        <div class="col-md-9">
+            <table class="tables table-striped adminTable">
+                <tr>
+                    <th>نام کاربری</th>
+                    <th>وضعیت</th>
+                    <th>نام خانوادگی</th>
+                    <th>نام</th>
+                    <th>عملیات</th>
+                </tr>
+                <tr th:each="user : ${allUser}">
+                    <td><span th:text="${user.username}"> Title </span></td>
+                    <td><span th:text="${user.enabled}"> وضعیت </span></td>
+                    <td><span th:text="${user.lastName}"> فامیل </span></td>
+                    <td><span th:text="${user.firstName}">نام </span></td>
+                    <td>
+                        <a th:href="@{/admin/addUserToWorkGroup(id=${user.id},wg=${wg})}"><i class="fas fa-plus" style="color:green;"></i></a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <span>کاربران فعلی</span>
+        </div>
+        <div class="col-md-9">
+            <table class="tables table-striped adminTable">
+                <tr>
+                    <th>نام کاربری</th>
+                    <th>وضعیت</th>
+                    <th>نام خانوادگی</th>
+                    <th>نام</th>
+                    <th>عملیات</th>
+                </tr>
+                <tr th:each="user : ${addedUsers}">
+                    <td><span th:text="${user.username}"> Title </span></td>
+                    <td><span th:text="${user.enabled}"> وضعیت </span></td>
+                    <td><span th:text="${user.lastName}"> فامیل </span></td>
+                    <td><span th:text="${user.firstName}">نام </span></td>
+                    <td>
+                        <a th:href="@{/admin/removeUserFromWorkGroup(id=${user.id},wg=${wg})}">
+                            <i class="fas fa-trash-alt" style="color:#ff9900;"></i></a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+</div>
+</div>
+<section>
+    <div th:replace="Layout :: footer"></div>s
+</section>
+
+</html>

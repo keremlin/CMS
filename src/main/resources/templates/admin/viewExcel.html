@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:replace="Layout :: head"></div>
+    <title>نمایش جدول</title>
+</head>
+<body>
+<section>
+    <div th:replace="Layout :: header(${loggedUser},${isAuth})"></div>
+</section>
+<div class="container-fluid minHeight">
+    
+
+            
+            
+                <div class="row">
+                    
+                    <div class="col-md-12">
+                        <p>نتیجه گزارش</p>
+                        <p><span th:text="${olapIndex.title}"></span></p>
+                        <p><span th:text="${olapIndex.dateRange}"></span></p>
+                        <p><span th:text="${olapIndex.dateRangeEnd}"></span></p>
+                        <p><span th:text="${olapIndex.dateCreated}"></span></p>
+                        <p> <a target="_blank" th:href="@{../download/excel(fileId=${fileID})}"> دانلود گزارش<i class="fas fa-download" style="color:#4b9ade;font-size: 30px;;"></i></a></p>
+                    </div>
+                </div>
+               
+               
+                <div th:if="${linkList!=null}" class="row">
+
+                    <div class="col-md-12">
+                        <table  class="excelTable">
+                            
+                            <tr th:each="linker :${linkList}">
+                                <td><span th:text="${linker.d1}">owner</span></td>
+                                
+                                <td  th:if="${linker.d2 == null}" class="hideRightBorder"><span th:text="${linker.d2}">owner</span></td>
+                                <td  th:if="${linker.d2 != null}" ><span th:text="${linker.d2}">owner</span></td>
+
+                                <td th:if="${linker.d3 == null}" class="hideRightBorder"><span th:text="${linker.d3}">owner</span></td>
+                                <td th:if="${linker.d3 != null}"  ><span th:text="${linker.d3}">owner</span></td>
+                                
+                                
+                                <td th:if="${linker.d4 == null}" class="hideRightBorder"><span th:text="${linker.d4}">owner</span></td>
+                                <td th:if="${linker.d4 != null}" ><span th:text="${linker.d4}">owner</span></td>
+
+                                <td th:if="${linker.d5 == null}" class="hideRightBorder"><span th:text="${linker.d5}">owner</span></td>
+                                <td th:if="${linker.d5 != null}"><span th:text="${linker.d5}">owner</span></td>
+
+                                <td  th:if="${linker.d6 == null}" class="hideRightBorder"><span th:text="${linker.d6}">owner</span></td>
+                                <td  th:if="${linker.d6 != null}" ><span th:text="${linker.d6}">owner</span></td>
+
+                                <td  th:if="${linker.d7 == null}" class="hideRightBorder"><span th:text="${linker.d7}">owner</span></td>
+                                <td  th:if="${linker.d7 != null}" ><span th:text="${linker.d7}">owner</span></td>
+
+                                <td  th:if="${linker.d8 == null}" class="hideRightBorder"><span th:text="${linker.d8}">owner</span></td>
+                                <td  th:if="${linker.d8 != null}" ><span th:text="${linker.d8}">owner</span></td>
+                                
+                                <td th:if="${linker.d9 == null}" class="hideRightBorder"><span th:text="${linker.d9}">owner</span></td>
+                                <td th:if="${linker.d9 != null}" ><span th:text="${linker.d9}">owner</span></td>
+
+                                <td th:if="${linker.d10 == null}" class="hideRightBorder"><span th:text="${linker.d10}">owner</span></td>
+                                <td th:if="${linker.d10 != null}" ><span th:text="${linker.d10}">owner</span></td>
+
+                                <td th:if="${linker.d11 == null}" class="hideRightBorder"><span th:text="${linker.d11}">owner</span></td>
+                                <td th:if="${linker.d11 != null}" ><span th:text="${linker.d11}">owner</span></td>
+
+                                <td th:if="${linker.d12 == null}" class="hideRightBorder"><span th:text="${linker.d12}">owner</span></td>
+                                <td th:if="${linker.d12 != null}"><span th:text="${linker.d12}">owner</span></td>
+
+                                <td th:if="${linker.d13 == null}" class="hideRightBorder"><span th:text="${linker.d13}">owner</span></td>
+                                <td th:if="${linker.d13 != null}"><span th:text="${linker.d13}">owner</span></td>
+
+                                <td th:if="${linker.d14 == null}" class="hideRightBorder"><span th:text="${linker.d14}">owner</span></td>
+                                <td th:if="${linker.d14 != null}"><span th:text="${linker.d14}">owner</span></td>
+
+                                <td th:if="${linker.d15 == null}" class="hideRightBorder"><span th:text="${linker.d15}">owner</span></td>
+                                <td th:if="${linker.d15 != null}" ><span th:text="${linker.d15}">owner</span></td>
+
+                                <td th:if="${linker.d16 == null}" class="hideRightBorder"><span th:text="${linker.d16}">owner</span></td>
+                                <td th:if="${linker.d16 != null}" ><span th:text="${linker.d16}">owner</span></td>
+
+                                <td th:if="${linker.d17 == null}" class="hideRightBorder"><span th:text="${linker.d17}">owner</span></td>
+                                <td th:if="${linker.d17 != null}" ><span th:text="${linker.d17}">owner</span></td>
+
+                                <td th:if="${linker.d18 == null}" class="hideRightBorder"><span th:text="${linker.d18}">owner</span></td>
+                                <td th:if="${linker.d18 != null}" ><span th:text="${linker.d18}">owner</span></td>
+
+                                <td th:if="${linker.d19 == null}" class="hideRightBorder"><span th:text="${linker.d19}">owner</span></td>
+                                <td th:if="${linker.d19 != null}" ><span th:text="${linker.d19}">owner</span></td>
+
+                                <td th:if="${linker.d20 == null}" class="hideRightBorder"><span th:text="${linker.d20}">owner</span></td>
+                                <td th:if="${linker.d20 != null}" ><span th:text="${linker.d20}">owner</span></td>
+
+                                
+                                <td th:if="${linker.d21 == null}" class="hideRightBorder"><span th:text="${linker.d21}">owner</span></td>
+                                <td th:if="${linker.d21 != null}" ><span th:text="${linker.d21}">owner</span></td>
+                                
+                                <td th:if="${linker.d22 == null}" class="hideRightBorder"><span th:text="${linker.d22}">owner</span></td>
+                                <td th:if="${linker.d22 != null}" ><span th:text="${linker.d22}">owner</span></td>
+                            </tr>
+                        </table>
+                        
+                    </div>
+                    <div class="col-md-10" style="text-align: left;">
+                        <span> <a target="_blank" th:href="@{../download/excel(fileId=${fileID})}">دانلود گزارش<i class="fas fa-download" style="color:#4b9ade;font-size: 30px;;"></i></a></span>
+                    </div>
+
+                </div>
+                <div>
+                    
+                </div>
+    
+
+    
+</div>
+<section>
+    <div th:replace="Layout :: footer"></div>
+</section>
+
+</body>
+</html>

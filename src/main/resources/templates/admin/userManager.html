@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:replace="Layout :: head"></div>
+    <title>Title</title>
+</head>
+<body>
+<section>
+    <div th:replace="Layout :: header(${loggedUser},${isAuth})"></div>
+</section>
+<div class="container-fluid minHeight">
+    <div class="row">
+
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2">
+                        <a  href="../admin/addUser"><div class="single-button"><div><i class="fas fa-user-plus"></i></div><span>کاربر جدید</span></div></a>
+                    </div>
+                    <div class="col-md-7 search-record">
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4"><span>نمایش گروه</span></div>
+                            <div class="col-md-6">
+                                <select id="groupID">
+                                    <option value="">انتخاب گروه</option>
+                                    <option th:each="Role: ${allGroups}" th:value="${Role.id}" th:text="${Role.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4"><span>جستجوی شخص</span></div>
+                            <div class="col-md-6"><input type="text" id="searchPerson" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${allUsers!=null}" class="row">
+                    <div class="col-md-1">
+
+                    </div>
+                    <div class="col-md-11">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table id="userTable"  class="tables table-striped adminTable">
+                                    <tr>
+                                        <th>نام کاربری</th>
+
+                                        <th>وضعیت</th>
+                                        <th>نام خانوادگی</th>
+                                        <th>نام</th>
+                                        <th>نقش</th>
+                                        <th>عملیات</th>
+                                    </tr>
+                                    <tr th:if="${isEmpty}">
+                                        <td colspan="2"> کاربری وجود ندارد </td>
+                                    </tr>
+                                    <tr th:each="user : ${allUsers}">
+                                        <td><span th:text="${user.username}"> Title </span></td>
+
+                                        <td><span th:text="${user.enabled}"> وضعیت </span></td>
+                                        <td><span th:text="${user.lastName}"> فامیل </span></td>
+                                        <td><span th:text="${user.firstName}">نام </span></td>
+                                        <td><span th:text="${user.roleName}">نقش</span></td>
+
+
+
+                                        <td>
+                                            <a th:href="@{../admin/removeUser(id=${user.vmId})}"><i class="fas fa-trash-alt" style="color:#4b9ade;"></i></a>
+                                            <a th:href="@{../admin/editUser(id=${user.vmId})}"><i class="fas fa-user-edit" style="color:#4b9ade;"></i></a>
+                                            <a th:href="@{../admin/bannUser(id=${user.vmId})}"><i class="fas fa-ban" style="color:#4b9ade;"></i></a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-3">
+                                <div id="userIndexDiv"></div>
+                                <input type="text" id="currentUserPage" style="border:none;color:#75715e">
+                                <input type="hidden" id="userAllPages" th:value="${usersAllPages}">
+
+
+                            </div>
+                            <div class="col-md-5"></div>
+                        </div>
+            </div>
+
+        </div>
+    </div>
+
+    </div>
+</div>
+<section>
+    <div th:replace="Layout :: footer"></div>s
+</section>
+<input type="hidden" id="workGroupIdd" th:value="${workGroupId}">
+<script>
+    $(document).ready(function() {
+
+        $( "#groupID" ).change(function() {
+            var strId = "";
+            $( "select option:selected" ).each(function() {
+                console.log($( this ).val());strId = $( this ).val();
+
+            });
+            window.location.replace("../admin/userManager?groupId="+strId);
+        });
+
+            for (var userPageIndex = 0; userPageIndex < $("#userAllPages").val(); userPageIndex++) {
+                $("#userIndexDiv").append(
+                    "<span>[<a href='nextPage' class='userPageIndexes'> " + (userPageIndex + 1) + " </a>]</span>"
+                );
+            }
+
+        $(".userPageIndexes").click(function (event) {
+            //Get the content of document if saved
+            event.preventDefault();
+            var nextPage=parseInt($(this).text())-1;
+
+            $.ajax({
+                url: "../REST/admin/getUserNextPage?pageNumber="+nextPage+"&workGroupId="+$("#workGroupIdd").val(),//+ $('#documentId').text(),
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                success: function () {
+                    console.log("User REST load success");
+                }
+
+            }).done(function (data) {
+                $("#userTable").find("tr:gt(0)").remove();
+                data.forEach(function(item,index){
+
+                    console.log(item);
+                    $('#currentUserPage').val('صفحه'+(item.pageNumber+1));
+                    $("#userTable").append(
+                        "<tr>" +
+                        "<td>"+item.username+"</td>" +
+                        "<td>"+item.enabled+"</td>" +
+                        "<td>"+item.lastName+"</td>" +
+                        "<td>"+item.firstName+"</td>" +
+                        "<td>"+item.roleName+"</td>" +
+                        "<td>" +
+                        '<a href=\"../admin/removeUser?id='+item.vmId+'\"><i class=\"fas fa-trash-alt\" style=\"color:#4b9ade;\"></i></a>' +
+                        '<a href=\"../admin/editUser?id='+item.vmId+'\"><i class="fas fa-user-edit" style="color:#4b9ade;"></i></a>'+
+                        '<a href=\"../admin/bannUser?id='+item.vmId+'\"><i class="fas fa-ban" style="color:#4b9ade;"></i></a>'+
+                        "</td>" +
+                        "</tr>"
+                    );
+                });
+
+            });
+        });
+
+    });
+
+</script>
+
+
+
+</body>
+</html>

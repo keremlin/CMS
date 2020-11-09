@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:replace="Layout :: head"></div>
+    <title>گروه کاری جدید</title>
+</head>
+<body>
+<section>
+    <div th:replace="Layout :: header(${loggedUser},${isAuth})"></div>
+</section>
+<div class="container-fluid minHeight">
+    <div class="row">
+        <div class="col-md-3">
+
+        </div>
+        <div class="col-md-6">
+            <form action="#" method="post" th:action="@{/admin/addWorkGroup}" th:object="${obj}" id="userForm">
+                <div class="inlineBlock">
+                    <div class="form-group">
+                        <label for="name">نام گروه</label>
+                        <input class="form-control" type="text" id="name" name="name" th:field="*{name}">
+                        <p th:if="${#fields.hasErrors('name')}"
+                           th:errors="*{name}"> error on name</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">توضیحات</label>
+                        <input class="form-control" type="text" id="description" name="description" th:field="*{description}">
+                        <p th:if="${#fields.hasErrors('description')}"
+                           th:errors="*{description}"> error on firstName</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">مدیر گروه</label>
+                        <select    id="ManagerID" th:field="*{id}">
+                            <option value="">انتخاب مدیر گروه</option>
+                            <option th:each="User: ${managers}" th:value="${User.id}" th:text="${User.lastName}"></option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="description">نوع گروه</label>
+                        <select    id="ftpGroup" th:field="*{ftpGroup}">
+                            <option value="0">گروه محتوی</option>
+                            <option value="1">گروه انتقال فایل</option>
+
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+
+
+                       <input type="checkbox" th:field="*{anyOneGroup}"/>
+                        <label>گروه عمومی ( قابل دیدن توسط کسانی که لاگین نکرده اند )</label>
+                    </div>
+
+                    <input class="form-control" type="submit" >
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<section>
+    <div th:replace="Layout :: footer"></div>s
+</section>
+<script>
+    $(document).ready(function()
+    {
+        $("#userForm").validate();
+        jQuery('#name').rules('add', Vname);
+        jQuery('#ManagerID').rules('add',requierd);
+    });
+</script>
+</body>
+</html>

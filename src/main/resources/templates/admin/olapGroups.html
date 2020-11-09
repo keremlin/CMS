@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:replace="Layout :: head"></div>
+    <title>ویرایش کاربران شهرستان ها</title>
+</head>
+
+<section>
+    <div th:replace="Layout :: header(${loggedUser},${isAuth})"></div>
+</section>
+<div class="minHeight">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <input type="hidden" id="userSelected" value="">
+            <p>لیست کلیه کاربران</p>
+            <table class="tables adminTable" id="userTable">
+                <tr>
+                    <th>کاربری</th>
+                    <th>نام کاربری</th>
+                    <th>وضعیت</th>
+                    <th>نام خانوادگی</th>
+                    <th>نام</th>
+                    <th>عملیات</th>
+                </tr>
+                <tr th:each="user : ${addedUsers}">
+                    <td><span th:text="${user.id}"> Title </span></td>
+                    <td><span th:text="${user.username}"> Title </span></td>
+                    <td><span th:text="${user.enabled}"> وضعیت </span></td>
+                    <td><span th:text="${user.lastName}"> فامیل </span></td>
+                    <td><span th:text="${user.firstName}">نام </span></td>
+                    <td>
+                        <a th:href="@{/admin/removeUserFromWorkGroup(id=${user.id},wg=${wg})}">
+                            <i class="fas fa-trash-alt" style="color:#ff9900;"></i></a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        
+    </div>
+    <div class=row><p></p></div>
+    <div class="row">
+        <div class="col-md-6">
+            <span>شهرهای انتخاب شده</span>
+            
+                <table id="cityIncludedTable" class="tables adminTable">
+                    <tr>
+                        <th>نام شهر</th>
+                        <th>عملیات</th>
+                    </tr>
+                    <tr>
+                        <td><span> Title </span></td>
+                        
+                        <td>
+                            <a><i class="fas fa-plus" style="color:green;"></i></a>
+                        </td>
+                    </tr>
+                </table>
+        </div>
+            <div class="col-md-6">
+                <span>شهرهای موجود</span>
+                <table id="cityTable" class="tables adminTable">
+                    <tr>
+                        <th>نام شهر</th>
+                        <th>عملیات</th>
+                    </tr>
+                    <tr th:each="town : ${towns}">
+                        <td><span th:text="${town}"> Title </span></td>
+                        
+                        <td>
+                            <a th:attr="data-city=${town}" th:href="@{/admin/addUserToWorkGroup(id=${town},wg=${wg})}"><i class="fas fa-plus" style="color:green;"></i></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            </div>
+       
+
+    </div>
+</div>
+</div>
+<section>
+    <div th:replace="Layout :: footer"></div>s
+</section>
+<script>
+    $(document).ready(function(){
+        console.log('ready');
+    });
+    
+    //new created table city of users
+    $(document).on('click','.deleteCityFromList',function(e) {
+        event.preventDefault();
+        console.log('new city table created');
+        var cityItem=$(this).attr('data-city');
+        $.ajax({
+            url: "../REST/admin/deleteCityToPerson?person="+$('#userSelected').val()+'&city='+cityItem,//+ $('#documentId').text(),
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            success: function () {
+                
+            }
+        }).done(function (data) {
+           
+           refreshIncludedCityList();
+           $("span:contains('"+cityItem+"')").each(function(){
+            $(this).parent().siblings('td').children('a').children('i').removeClass('fa-check-circle').addClass('fa-plus');
+           });
+        });
+        refreshIncludedCityList();
+    });
+
+    $('#userTable tr').click(function(){
+        $(this).addClass("selectedRow").siblings().removeClass("selectedRow");
+        $('#userSelected').val( $(this).find("td:first").text());
+        console.log($('#userSelected').val());
+
+        $.ajax({
+            url: "../REST/admin/olapGetNotIncludedCities?person="+$('#userSelected').val(),//+ $('#documentId').text(),
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            success: function () {
+                console.log("REST load success");
+            }
+        }).done(function (data) {
+            //$("#cityTable").find("tr:gt(0)").remove();
+            data.forEach(function(item,index){
+                
+                //$("#cityTable").append(
+                //    '<tr><td><span>'+item+'</span></td>  <td><a href="/getCity"><i class="fas fa-plus" style="color:green;"></i></a></td></tr>'
+                //    );
+            });
+        });
+        refreshIncludedCityList();
+    });
+    function refreshIncludedCityList(){
+        $.ajax({
+            url: "../REST/admin/olapGetIncludedCities?person="+$('#userSelected').val(),//+ $('#documentId').text(),
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            success: function () {
+                
+            }
+        }).done(function (data) {
+            $('.fa-check-circle').removeClass('fa-check-circle').addClass('fa-plus');
+            $("#cityIncludedTable").find("tr:gt(0)").remove();
+            data.forEach(function(item,index){
+                $("span:contains('"+item+"')").each(function(){
+                    $(this).parent().siblings('td').children('a').children('i').removeClass('fa-plus').addClass('fa-check-circle');
+                    //$(this).parent().parent().css('border', 'solid 2px lightGreen'); 
+                })
+                $("#cityIncludedTable").append(
+                    '<tr><td><span>'+item+'</span></td>  <td><a class="deleteCityFromList" data-city="'+item+'" href="/getCity"><i class="fas fa-plus" style="color:red;"></i></a></td></tr>'
+                    );
+            });
+        });
+    }
+    $('tr a').click(function(){    
+        event.preventDefault();
+        //console.log($(this).attr('data-city'));
+        //console.log($('#userSelected').val());
+        var itemClicked=this;
+        $.ajax({
+            url: "../REST/admin/setCityToPerson?person="+$('#userSelected').val()+'&city='+$(this).attr('data-city'),//+ $('#documentId').text(),
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            success: function () {
+                
+            }
+        }).done(function (data) {
+            //console.log( data);
+            refreshIncludedCityList();
+            
+        });
+    });
+   
+</script>
+</html>

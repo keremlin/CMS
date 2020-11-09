@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+
+    <div th:replace="Layout :: head"></div>
+    <title>Title</title>
+
+</head>
+<body>
+<section>
+    <div th:replace="Layout :: header(${loggedUser},${isAuth})"></div>
+</section>
+<div class="container-fluid minHeight">
+    <div class="row">
+
+            <div class="col-md-2"><input id="currentUserRole" type="hidden" th:value="${userRole}"></div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2">
+                        <a  href="../admin/editor/editPost?documentId=0"><div class="single-button"><div><i class="fas fa-file-signature"></i></div><span>ایجاد سند</span></div></a>
+                    </div>
+                    <div class="col-md-7 search-record">
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4"><span>نمایش گروه</span></div>
+                            <div class="col-md-6">
+                                <select id="ManagerID">
+                                    <option value="">انتخاب گروه</option>
+                                    <option th:each="Role: ${allGroups}" th:value="${Role.id}" th:text="${Role.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4"><span>جستجوی شخص</span></div>
+                            <div class="col-md-6">
+                                <select id="PersonID">
+                                <option value="">انتخاب شخص</option>
+                                <option th:each="person: ${allPersonInGroup}" th:value="${person.key}" th:text="${person.value}"></option>
+                            </select></div>
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${documentsList!=null}" class="row">
+
+                    <div class="col-md-12">
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <row>
+                                    <div class="col-md-12">
+                                        <table class="tables table-striped adminTable" id="documentTable">
+                                            <tr>
+                                                <th>تیتر</th>
+                                                <th>ایجاد کننده</th>
+                                                <th>زمان ایجاد</th>
+                                                <th>گروه کاری</th>
+                                                <th>وضعیت</th>
+                                                <th>اعلام نظر</th>
+
+                                                <th>عملیات</th>
+                                            </tr>
+                                            <tr th:each="document : ${documentsList}">
+                                                <td><span th:text="${document.title}">title</span></td>
+                                                <td><span th:text="${document.owner}">owner</span></td>
+                                                <td><span th:text="${document.createDate}">createDate</span></td>
+
+
+                                                <td><span th:text="${document.workGroups}">workGroup</span> </td>
+                                                <td><span th:text="${document.status}">Status</span> </td>
+                                                <td><span th:text="${document.allowComment}">allowComment</span> </td>
+
+                                                <td>
+                                                    <a th:href="@{../admin/editor/deletePost(documentId=${document.id})}"><i class="fas fa-trash-alt" style="color:#4b9ade;"></i></a>
+
+                                                    <!--<a th:href="@{../admin/editor/addWorkGroupToPost(documentId=${document.id})}"><i class="fas fa-user-plus" style="color:#4b9ade;"></i></a>-->
+                                                    <span th:if="${currentUserRole == 'ROLE_FTP'}"></span>
+                                                    <span th:unless="${currentUserRole == 'ROLE_FTP'}"><a th:href="@{../admin/editor/banPost(documentId=${document.id})}"><i class="fas fa-ban" style="color:#4b9ade;"></i></a></span>
+                                                    <a th:href="@{../admin/editor/editPost(documentId=${document.id})}"><i class="far fa-edit" style="color:#4b9ade;"></i></a>
+                                                    <a th:href="@{../admin/editor/showPost(documentId=${document.id})}"><i class="fas fa-search-plus" style="color:#4b9ade;"></i></a>
+
+                                                    <span th:if="${currentUserRole == 'ROLE_FTP'}"></span>
+                                                    <span th:unless="${currentUserRole == 'ROLE_FTP'}"><a th:href="@{../admin/editor/enableCommentForDocument(documentId=${document.id})}"><i class="far fa-comments" style="color:#4b9ade;"></i></a></span>
+
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </row>
+
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-3">
+                                <div id="userIndexDiv"></div>
+                                <input type="text" id="currentUserPage" style="border:none;color:#75715e">
+                                <input type="hidden" id="userAllPages" th:value="${usersAllPages}">
+
+
+                            </div>
+                            <div class="col-md-5"></div>
+                        </div>
+            </div>
+
+        </div>
+    </div>
+
+    </div>
+    <row>
+
+        <div class="col-md-12" style="text-align: center;">
+
+            <input type="hidden" id="allPages" th:value="${documentAllPages}">
+            <div id="#pageNumbers"></div>
+            <div id="pageIndexer"></div>
+            <input type="text" id="currentPage"  value="1" style="border:none;color:#75715e;text-align:center;"/>
+        </div>
+
+    </row>
+</div>
+<section>
+    <div th:replace="Layout :: footer"></div>s
+</section>
+<input type="hidden" id="workGroupIdd" th:value="${workGroupId}">
+<input type="hidden" id="userId" th:value="${userId}">
+<input type="hidden" id="currentPageHidden" value="0">
+<script>
+    $(document).ready(function() {
+        $( "#ManagerID" ).change(function() {
+            var strId2 = "";
+            console.log($( this ).val());
+            console.log("enter change");
+            $( "select option:selected" ).each(function() {
+                strId2 = $( this ).val();
+                console.log($( this ).val());
+                console.log(strId2);
+                console.log("../admin/documentManagement?groupId="+strId2);
+            });
+
+            window.location.replace("../admin/documentManagement?groupId="+strId2);
+        });
+        $( "#PersonID" ).change(function() {
+            var strId = "";
+            $( "select option:selected" ).each(function() {
+                console.log($( this ).val());
+                strId = $( this ).val();
+
+            });
+            window.location.replace("../admin/documentManagement?userId="+strId);
+        });
+        for(var pageIndex=0;pageIndex<$("#allPages").val();pageIndex++){
+            $("#pageIndexer").append(
+                "<span>[<a href='nextPage' class='pageIndexes'> "+(pageIndex+1)+" </a>]</span>"
+            );
+        }
+
+        $(".pageIndexes").click(function (event) {
+            //Get the content of document if saved
+            event.preventDefault();
+            var nextPage=parseInt($(this).text())-1;
+            getNextPage(nextPage);
+        });//end of click page index
+        $(document).on('click','.tool',function(e) {
+            console.log(this);
+            console.log($(this).parent());
+            event.preventDefault();
+            var ajaxResult=ajaxTool($(this).parent().attr("data-id"),$(this).parent().attr("data-value"),$(this).parent());
+        });
+        //load the table for the first time
+        getNextPage(0);
+    });//end of document load
+    //get the next page table and create table
+    function ajaxTool(id,func,element){
+
+        $.ajax({
+            url: "../REST/admin/"+func+"?id="+id,
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            success: function () {
+            }
+        }).done(function (data) {
+            if( (element.attr("data-value")).startsWith('deletePosts'))
+            {
+                element.parent().parent().fadeOut(function(){
+                    getNextPage($('#currentPageHidden').val());
+                });
+            }else if(element.attr("data-value").startsWith('banPost')){
+
+                if(data.status.startsWith('true'))
+                    element.parent().prev().prev().text("فعال");
+                else
+                    element.parent().prev().prev().text("غیر فعال");
+            }else if(element.attr("data-value").startsWith('enableCommentForDocument')){
+                console.log("remove fired"+data.status+element.parent().prev().text());
+                if(data.status.startsWith('true'))
+                    element.parent().prev().text("فعال");
+                else
+                    element.parent().prev().text("غیر فعال");
+            }
+
+
+        });//end of ajax done
+        return true;
+    }//end of ajaxTool
+    function getNextPage(nextPage){
+        $.ajax({
+            url: "../REST/admin/getNextPage?pageNumber="+nextPage+"&workGroupId="+$("#workGroupIdd").val()+"&userId="+$("#userId").val(),//+ $('#documentId').text(),
+            type: "POST",
+            dataType: "json",
+            contentType: "application/json",
+            success: function () {
+                console.log("REST load success");
+            }
+
+        }).done(function (data) {
+            $("#documentTable").find("tr:gt(0)").remove();
+            data.forEach(function(item,index){
+                //create java date
+                var date1=new Date(item.createDate);
+                var date2=new Date(item.editDate);
+                //convert to Jalali by using jalali.js file
+                var jalali=date2convert(date1);
+                console.log(jalali);
+                var commentForDocumentTemp="";
+                if($('#currentUserRole').val().valueOf() != new String("ROLE_FTP").valueOf())
+                    var commentForDocumentTemp='<a data-value="enableCommentForDocument"  data-id="'+item.id+'" target="_blank" href=\"../admin/editor/enableCommentForDocument?documentId='+item.id+'\"><i class="tool far fa-comments" style="color:#4b9ade;"></i></a>';
+
+                $('#currentPage').val('صفحه'+(item.pageNumber+1));
+                $('#currentPageHidden').val(item.pageNumber);
+                $("#documentTable").append(
+                    "<tr>" +
+                    "<td>"+item.title+"</td>" +
+                    "<td>"+item.owner+"</td>" +
+                    "<td>"+ jalali  +" "+date1.getHours()+":"+date1.getMinutes()+":"+date1.getSeconds()+"</td>" +
+                    //"<td>"+(date2.getMonth() + 1) + '/' + date2.getDate() + '/' +  date2.getFullYear()+" "+date2.getHours()+":"+date2.getMinutes()+":"+date2.getSeconds()+"</td>" +
+                    //"<td>"+item.description+"</td>" +
+                    "<td>"+item.workGroups+"</td>" +
+                    "<td>"+item.status+"</td>" +
+                    "<td>"+item.allowComment+"</td>" +
+                    "<td>" +
+                    '<a data-value=\"deletePosts\" data-id=\"'+item.id+'\"  href=\"../admin/editor/deletePost?documentId='+item.id+'\"><i class=\"tool fas fa-trash-alt\" style=\"color:#4b9ade;\"></i></a>' +
+                    //'<a href=\"../admin/editor/addWorkGroupToPost?documentId='+item.id+'\"><i class="fas fa-user-plus" style="color:#4b9ade;"></i></a>'+
+                    '<a data-value=\"banPost\"  data-id="'+item.id+'" target="_blank" href=\"../admin/editor/banPost?documentId='+item.id+'\"><i class="tool fas fa-ban" style="color:#4b9ade;"></i></a>'+
+                    '<a data-value=\"editPosts\"  data-id="'+item.id+'" target="_blank" href=\"../admin/editor/editPost?documentId='+item.id+'\"><i class="far fa-edit" style="color:#4b9ade;"></i></a>'+
+                    '<a data-value=\"showPosts\"  data-id="'+item.id+'" target="_blank" href=\"../admin/editor/showPost?documentId='+item.id+'\"><i class=\"fas fa-search-plus\" style=\"color:#4b9ade;\"></i></a>'+
+                    commentForDocumentTemp+
+                    "</td>" +
+                    "</tr>"
+                );
+            });
+
+        });//end of done ajax
+    }
+</script>
+</body>
+</html>

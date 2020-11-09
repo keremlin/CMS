@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="Layout :: head"></div>
+    <title th:text="${pageTitle}"></title>
+</head>
+<body>
+<div th:replace="Layout :: header(user=${msg},isAuth=${isAuth})"></div>
+<section>
+
+    <div class="container-fluid">
+        <div class="row" style="min-height: 0px;"></div>
+        <div class="row">
+            <div class="col-sm-1 col-xs-0"></div>
+            <div class="col-sm-10 col-xs-12 blog">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class=" row firstMenu firstMenuBG4">
+                            <div class="firstMenu300">
+                            </div>
+                            <div class="firstMenu700">
+                                <h1>پنل کاربری</h1>
+                                <div>
+                                    <div class="userPanelSignIn" th:if="${isAuth=='F'}">
+                                        <p><i class="fas fa-exclamation-circle"></i>برای مشاهده پنل لطفا وارد شوید<i class="fas fa-exclamation-circle"></i></p>
+                                        <p><a href="login"><i class="fas fa-user fa-xs fa-margin"></i>ورود کاربر</a></p>
+                                    </div>
+                                    <div th:unless="${isAuth=='F'}">
+                                        <div class="row">
+                                            <div class="col-md-12" id="composeContainer"><a href="admin/editor/editPost?documentId=0"><i class="fas fa-file-signature"></i>ایجاد سند<span id="compose"></span></a></div>
+                                            <div class="col-md-12"><a href="admin/documentManagement"><i class="far fa-file-excel"></i>مدیریت سند</a></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <TABLE>
+
+                                                    <tr>
+                                                        <td><a href="more?type=-1&option=1">اسناد جدید مستقیم : </a></td>
+                                                        <td><span id="numberOfNewDirect"></span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="more?type=-1&option=2">اسناد جدید گروه : </a></td>
+                                                        <td><span id="numberOfNewDocuments"></span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>پیام جدید : </td>
+                                                        <td><span id="numberOfNewComments"></span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="more?type=-1&option=4"> اسناد گروه ها : </a></td>
+                                                        <td><span id="numberOfGroupDocuments"></span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>گروه ها : </td>
+                                                        <td><span id="numberOfGroups"></span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><a href="more?type=-1&option=6"> اسناد شما : </a></td>
+                                                        <td><span id="numberOfDocuments"></span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>پیام ها : </td>
+                                                        <td><span id="numberOfComments"></span></td>
+                                                    </tr>
+                                                </TABLE>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row"><div class="col-md-12"></div></div>
+                                        <div class="row"><div class="col-md-12"></div></div>
+                                        <div class="row"><div class="col-md-12"></div></div>
+                                        <div class="row"><div class="col-md-12"></div></div>
+                                        <div class="row"><div class="col-md-12"></div></div>
+                                        <div class="row"><div class="col-md-12"></div></div>
+                                        <div class="row"><div class="col-md-12"></div></div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-5 col-sm-6 col-xs-12">
+                        <div class=" row firstMenu firstMenuBG1">
+                            <div class="firstMenu20">
+                            </div>
+                            <div class="firstMenu70">
+
+                                <h1>مطالب</h1>
+                                <div th:each="document :${publicDocument}">
+                                    <div class="row newsRow">
+                                        <div class="col-md-2"><i th:class="${document.cssClass}" style="font-size: 30px;"></i></div>
+                                        <div class="col-md-10">
+                                            <div>
+                                                <a th:if="${document.editDate != null}" class="documentTitle" th:href="@{/admin/editor/showPost(documentId=${document.id})}">
+                                                    <span th:text="${document.getTitle()}"></span>
+                                                </a>
+                                                <a th:if="${document.editDate == null}" class="documentTitle" th:href="@{/more(type=${document.id},option=8)}">
+                                                    <span th:text="${document.getTitle()}"></span>
+                                                </a>
+                                            </div>
+                                            <div th:if="${document.description != null}">
+                                                <span class="documentDescription" th:text="${document.description}"></span>
+                                                <span class="documentDescription"> - گروه </span>
+                                                
+                                            </div>
+                                            <div class="topic-date">
+                                                <span class="dateToConvert" th:if="${document.editDate != null}" th:text="${document.editDate}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class=" row firstMenu firstMenuBG2">
+                            <div class="firstMenu30">
+                            </div>
+                            <div class="firstMenu70">
+                                <h1>مطالب گروهی</h1>
+
+                                <div th:each="document :${documentList}">
+                                    <div>
+                                        <a class="documentTitle" th:href="@{/admin/editor/showPost(documentId=${document.id})}">
+                                            <span th:text="${document.getTitle()}"></span>
+                                        </a>
+                                        <span class="documentDescription" th:text="${document.description}"></span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</section>
+<div th:replace="Layout :: footer"></div>
+<script>
+    $(document).ready(function() {
+       //console begin
+        if($('#numberOfGroups')!= null){
+            $.ajax({
+                url: "REST/panel/numberOfGroups",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                success: function () {
+
+                }
+
+            }).done(function (data) {
+
+                $('#numberOfGroups').text(data.code);
+
+
+            });//end of done ajax
+            $.ajax({
+                url: "REST/panel/numberOfDocuments",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                success: function () {
+
+                }
+
+            }).done(function (data) {
+
+                $('#numberOfDocuments').text(data.code);
+
+
+            });//end of done ajax
+            $.ajax({
+                url: "REST/panel/numberOfComments",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                success: function () {
+
+                }
+
+            }).done(function (data) {
+
+                $('#numberOfComments').text(data.code);
+
+
+            });//end of done ajax
+            $.ajax({
+                url: "REST/panel/numberOfNewDocuments",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                success: function () {
+
+                }
+
+            }).done(function (data) {
+
+                $('#numberOfNewDocuments').text(data.code);
+
+
+            });//end of done ajax
+            $.ajax({
+                url: "REST/panel/numberOfGroupDocuments",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                success: function () {
+
+                }
+
+            }).done(function (data) {
+
+                $('#numberOfGroupDocuments').text(data.code);
+
+
+            });//end of done ajax
+            $.ajax({
+                url: "REST/panel/numberOfNewComments",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                success: function () {
+
+                }
+
+            }).done(function (data) {
+
+                $('#numberOfNewComments').text(data.code);
+
+
+            });//end of done ajax numberOfNewDirect
+            $.ajax({
+                url: "REST/panel/numberOfNewDirect",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                success: function () {
+
+                }
+
+            }).done(function (data) {
+
+                $('#numberOfNewDirect').text(data.code);
+
+
+            });//end of done ajax numberOfNewDirect
+        }//end of if
+
+        // change dates to shamsi function
+
+        //for each field with dateToConvert class change date to shamsi
+        $('.dateToConvert').each(function(){
+            $(this).text(date2convert($(this).text()));
+        });
+
+    });//end of ready
+</script>
+</body>
+</html>

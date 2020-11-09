@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:replace="Layout :: head"></div>
+    <title>اضافه کردن گروه کاری</title>
+</head>
+<body>
+<section>
+    <div th:replace="Layout :: header(${loggedUser},${isAuth})"></div>
+</section>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-1">
+
+        </div>
+        <div class="col-md-10">
+            <table class="tables table-striped">
+                <tr>
+                    <th>نام گروه</th>
+
+                    <th>وضعیت</th>
+                    <th>اعضا</th>
+                    <th>توضیحات گروه</th>
+
+                    <th>عملیات</th>
+                </tr>
+
+                <tr th:each="work : ${workGroup}">
+                    <td><span th:text="${work.name}"> Title </span></td>
+                    <td><span th:text="${work.enabled}"> وضعیت </span></td>
+                    <td><span th:text="${work.description}"> فامیل </span></td>
+                    <td><span th:text="${work.description}">نام </span></td>
+                    <td>
+                        <a th:href="@{/admin/editor/addWorkGroupToDocument(id=${work.id},documentId=${documentId})}"><i class="fas fa-plus" style="color:green;"></i></a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</div>
+<section>
+    <div th:replace="Layout :: footer"></div>s
+</section>
+</body>
+</html>

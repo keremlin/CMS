@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:replace="Layout :: head"></div>
+    <title>Title</title>
+</head>
+<body>
+<section>
+    <div th:replace="Layout :: header(${loggedUser},${isAuth})"></div>
+</section>
+<div class="container-fluid minHeight">
+    <div class="row">
+
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2">
+                        <a  href="../admin/addWorkGroup"><div class="single-button"><div><i class="fas fa-user-friends"></i></div><span>گروه جدید</span></div></a>
+                    </div>
+                    <div class="col-md-7 search-record">
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4"><span>نمایش براساس مدیر</span></div>
+                            <div class="col-md-6">
+                                <select id="ManagerID">
+                                    <option value="">انتخاب مدیر</option>
+                                    <option th:each="Role: ${allManagers}" th:text="${Role.firstName + ' ' + Role.lastName + ' ( '+
+                                    Role.username + ' ) '}" th:value="${Role.id}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4"><span>جستجوی شخص</span></div>
+                            <div class="col-md-6"><input type="text" id="searchPerson" style="width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${workGroupList!=null}" class="row">
+
+                    <div class="col-md-11">
+                        <table  class="tables table-striped adminTable">
+                            <tr>
+                                <th>نام</th>
+                                <th>توضیحات</th>
+                                <th>مدیر</th>
+                                <th>اعضا</th>
+                                <th>عمومی</th>
+                                <th>وضعیت</th>
+                                <th>عملیات</th>
+                            </tr>
+                            <tr th:each="workGroup :${workGroupList}">
+                                <td><span th:text="${workGroup.name}">name</span></td>
+                                <td><span th:text="${workGroup.description}">description</span></td>
+                                <td><span th:text="${workGroup.owner}">owner</span></td>
+                                <td><span th:text="${workGroup.members}">اعضا</span></td>
+                                <td><span th:text="${workGroup.anyOneGroup}">عمومی</span></td>
+                                <td><span th:text="${workGroup.enabled}">وضعیت</span> </td>
+                                <td>
+                                    <a th:href="@{../admin/removeWorkGroup(id=${workGroup.id},filterId=${filterId})}"><i class="fas fa-trash-alt" style="color:#4b9ade;"></i></a>
+                                    <a th:href="@{../admin/editWorkGroup(id=${workGroup.id},filterId=${filterId})}"><i class="fas fa-user-plus" style="color:#4b9ade;"></i></a>
+                                    <a th:href="@{../admin/bannWorkGroup(id=${workGroup.id},filterId=${filterId})}"><i class="fas fa-ban" style="color:#4b9ade;"></i></a>
+                                    <a th:href="@{../admin/publicizeWorkGroup(id=${workGroup.id},filterId=${filterId})}"><i class="fas fa-globe" style="color:#4b9ade;"></i></a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+    </div>
+
+    </div>
+</div>
+<section>
+    <div th:replace="Layout :: footer"></div>s
+</section>
+<script>
+    $( "#ManagerID" ).change(function() {
+        var strId = "";
+        $( "select option:selected" ).each(function() {
+            console.log($( this ).val());strId = $( this ).val();
+
+        });
+        window.location.replace("../admin/groupManagement?ownerId="+strId);
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:replace="Layout :: head"></div>
+    <title>Title</title>
+</head>
+<body>
+<section>
+    <div th:replace="Layout :: header(${loggedUser},${isAuth})"></div>
+</section>
+<div class="container-fluid minHeight">
+    <div class="row">
+
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2">
+                        <a  href="../admin/addLinker"><div class="single-button"><div><i class="fas fa-user-friends"></i></div><span>لینک جدید</span></div></a>
+                    </div>
+                    <div class="col-md-7 search-record">
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-4"><span>نمایش براساس مدیر</span></div>
+                            <div class="col-md-6">
+
+                            </div>
+                        </div>
+                        <div class="row">
+
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${linkList!=null}" class="row">
+
+                    <div class="col-md-11">
+                        <table  class="tables table-striped adminTable">
+                            <tr>
+                                <th>نام</th>
+                                <th>آیکون</th>
+                                <th>آی دی</th>
+
+                                <th>عملیات</th>
+                            </tr>
+                            <tr th:each="linker :${linkList}">
+                                <td><span th:text="${linker.title}">name</span></td>
+                                <td><span th:text="${linker.icon}">description</span></td>
+                                <td><span th:text="${linker.id}">owner</span></td>
+
+                                <td>
+                                    <a th:href="@{../admin/removeLink(id=${linker.id})}"><i class="fas fa-trash-alt" style="color:#4b9ade;"></i></a>
+                                    <a th:href="@{../admin/hierarchyManagement(id=${linker.id})}"><i class="fas fa-sitemap" style="color:#4b9ade;"></i></a>
+
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+    </div>
+
+    </div>
+</div>
+<section>
+    <div th:replace="Layout :: footer"></div>s
+</section>
+
+</body>
+</html>

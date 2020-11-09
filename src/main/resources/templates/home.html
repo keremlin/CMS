@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="Layout :: head"></div>
+    <title th:text="${pageTitle}"></title>
+</head>
+<body>
+<div th:replace="Layout :: header(user=${msg},isAuth=${isAuth})"></div>
+<section>
+<div class="container-fluid">
+    <div class="row">
+        <div class="d-none d-lg-block d-md-none col-md-1"></div>
+        <div class="col-lg-4 col-md-6 col-sm-5">
+            <div class="firstMenu707 firstMenu70 ">
+
+                
+                 
+                <div>
+                    <div class="row mainMenuRow " style="border:0px;">
+                       
+                        <div class="col-md-10">
+                            <div>
+                                
+                                <div style="overflow: hidden;">
+                                    <div id="A" style="float:right; width: 60%;">
+                                       <img src="images/banner.bmp" style="width: 90%; ">
+                                    </div>
+                                </div>
+                                   
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="row mainMenuRow newsRow">
+                        <div class="col-md-2"><i style="font-size: 30px;"></i></div>
+                        <div class="col-md-10">
+                            <div>
+                                <a class="documentTitle" href="/login">
+                                    <span>اداره کل نگهداری و مهندسی عملیات</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="row mainMenuRow newsRow">
+                        <div class="col-md-2"><i style="font-size: 30px;"></i></div>
+                        <div class="col-md-10">
+                            <div>
+                                <a class="documentTitle" href="/linker?key=1591">
+                                    <span>اداره سایت مرکزی</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="row mainMenuRow newsRow">
+                        <div class="col-md-2"><i style="font-size: 30px;"></i></div>
+                        <div class="col-md-10">
+                            <div>
+                                <a class="documentTitle" href="/login">
+                                    <span>اداره آمار و اطلاعات جمعیتی</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="row mainMenuRow newsRow">
+                        <div class="col-md-2"><i style="font-size: 30px;"></i></div>
+                        <div class="col-md-10">
+                            <div>
+                                <a class="documentTitle" href="/more?type=47&amp;option=7">
+                                    <span>اداره مهندسی نرم افزارهای کاربردی</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="row mainMenuRow newsRow">
+                        <div class="col-md-2"><i style="font-size: 30px;"></i></div>
+                        <div class="col-md-10">
+                            <div>
+                                <a class="documentTitle" href="/login">
+                                    <span>اسناد هویتی</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="row mainMenuRow newsRow">
+                        <div class="col-md-2"><i style="font-size: 30px;"></i></div>
+                        <div class="col-md-10">
+                            <div>
+                                <a class="documentTitle" href="/linker?key=1812">
+                                    <span>روابط عمومی و همکاری های بین الملل</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <div id="demo" class="row carousel slide " data-ride="carousel" style="max-width: 100%;">
+
+                <!-- Indicators -->
+                <ul class="carousel-indicators">
+                  <li data-target="#demo" data-slide-to="0" class="active"></li>
+                  <li data-target="#demo" data-slide-to="1"></li>
+                  
+                </ul>
+                
+                <!-- The slideshow -->
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <img src="images\security-posters-antivirus-scanning-.jpg" alt="Los Angeles" width="1100" height="500">
+                  </div>
+                  <div class="carousel-item">
+                    <img src="images\security-posters-antivirus-shrinking-data.jpg" alt="Chicago" width="1100" height="500">
+                  </div>
+                  
+                </div>
+                
+                <!-- Left and right controls -->
+                <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                  <span class="carousel-control-prev-icon"></span>
+                </a>
+                <a class="carousel-control-next" href="#demo" data-slide="next">
+                  <span class="carousel-control-next-icon"></span>
+                </a>
+              </div>
+        </div>
+        <div class="d-none d-lg-block d-md-none col-md-2"></div>
+    </div>
+</div>
+    <div class="container-fluid">
+        <div class="row" style="min-height: 0px;">
+        </div>
+        <div class="row">
+            <div class="d-none d-lg-block d-md-none col-md-1"></div>
+            <div class="col-lg-10 col-md-12 col-sm-12 blog">
+                <div class=row>
+                   
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-sm-12 col-xs-12">
+                        <div class=" row firstMenu firstMenuBG4">
+                            <div class="firstMenu300">
+                            </div>
+                            <div class="firstMenu700">
+                                <h1>پنل کاربری</h1>
+                                <div>
+                                   <div class="userPanelSignIn" th:if="${isAuth=='F'}">
+                                       <p><i class="fas fa-exclamation-circle"></i>برای مشاهده پنل لطفا وارد شوید<i class="fas fa-exclamation-circle"></i></p>
+                                       <p><a href="login"><i class="fas fa-user fa-xs fa-margin"></i>ورود کاربر</a></p>
+                                   </div>
+                                   <div th:unless="${isAuth=='F'}">
+                                       <div class="row">
+                                           <div class="col-md-12" id="composeContainer"><a href="admin/editor/editPost?documentId=0"><i class="fas fa-file-signature mainMenuIcon"></i>ایجاد سند<span id="compose"></span></a></div>
+                                           <div class="col-md-12"><a href="admin/documentManagement"><i class="far fa-file-excel mainMenuIcon"></i>مدیریت سند</a></div>
+                                           <div th:if="${isAmar==true}" class="col-md-12"><a href="admin/fileManagement"><i class="far fa-list-alt mainMenuIcon"></i>گزارشات استانی</a></div>
+                                       </div>
+                                       <div class="row" style="margin-top:7px;">
+                                           <div class="col-md-12">
+                                               <TABLE>
+
+                                                   <tr>
+                                                       <td><a href="more?type=-1&option=1">اسناد جدید مستقیم : </a></td>
+                                                       <td><span id="numberOfNewDirect"></span></td>
+                                                   </tr>
+                                                   <tr>
+                                                       <td><a href="more?type=-1&option=2">اسناد جدید گروه : </a></td>
+                                                       <td><span id="numberOfNewDocuments"></span></td>
+                                                   </tr>
+                                                   <tr>
+                                                       <td>پیام جدید : </td>
+                                                       <td><span id="numberOfNewComments"></span></td>
+                                                   </tr>
+                                                   <tr>
+                                                       <td><a href="more?type=-1&option=4"> اسناد گروه ها : </a></td>
+                                                       <td><span id="numberOfGroupDocuments"></span></td>
+                                                   </tr>
+                                                   <tr>
+                                                       <td>گروه ها : </td>
+                                                       <td><span id="numberOfGroups"></span></td>
+                                                   </tr>
+                                                   <tr>
+                                                       <td><a href="more?type=-1&option=6"> اسناد شما : </a></td>
+                                                       <td><span id="numberOfDocuments"></span></td>
+                                                   </tr>
+                                                   <tr>
+                                                       <td>پیام ها : </td>
+                                                       <td><span id="numberOfComments"></span></td>
+                                                   </tr>
+                                               </TABLE>
+                                           </div>
+                                       </div>
+
+
+                                       <div class="row"><div class="col-md-12"></div></div>
+                                       <div class="row"><div class="col-md-12"></div></div>
+                                       <div class="row"><div class="col-md-12"></div></div>
+                                       <div class="row"><div class="col-md-12"></div></div>
+                                       <div class="row"><div class="col-md-12"></div></div>
+                                       <div class="row"><div class="col-md-12"></div></div>
+                                       <div class="row"><div class="col-md-12"></div></div>
+                                   </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-4 col-sm-5 col-xs-12">
+                        <div class=" row firstMenu firstMenuBG1">
+                            <div class="firstMenu20">
+                            </div>
+                            <div class="firstMenu70">
+
+                                <h1>مطالب</h1>
+                                <div th:each="document :${publicDocument}">
+                                    <div class="row newsRow">
+                                        <div class="col-md-1"><i th:class="${document.cssClass}" style="font-size: 20px;"></i></div>
+                                        <div class="col-md-10">
+                                            <div>
+                                                <a class="documentTitle" th:href="@{/admin/editor/showPost(documentId=${document.id})}">
+                                                <span th:text="${document.getTitle()}"></span>
+                                                </a>
+                                            </div>
+                                            <div>
+                                                <span class="documentDescription" th:text="${document.description}"></span>
+                                                <span class="documentDescription"> - گروه </span>
+                                                <span class="documentDescription" th:text="${document.getWorkGroups()[0].getName()}"></span>
+                                            </div>
+                                            <div class="topic-date">
+                                                <span class="dateToConvert" th:text="${document.editDate}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div style="text-align: left;">
+                                    <a class="documentTitle" th:href="@{/more(type=0)}" style="text-align: left;"> ادامه مطالب<span><i class="fas fa-arrow-left"></i></span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--<div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class=" row firstMenu firstMenuBG2">
+                            <div class="firstMenu30">
+                            </div>
+                            <div class="firstMenu70">
+                                <h1>مطالب گروهی</h1>
+
+                                <div th:each="document :${documentList}">
+                                    <div>
+                                        <a class="documentTitle" th:href="@{/admin/editor/showPost(documentId=${document.id})}">
+                                            <span th:text="${document.getTitle()}"></span>
+                                        </a>
+                                        <span class="documentDescription" th:text="${document.description}"></span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>-->
+                    <div class="col-md-4 col-sm-6 col-xs-12">
+                        <div class=" row firstMenu firstMenuBG3">
+                            <div class="firstMenu20">
+                            </div>
+                            <div class="firstMenu70">
+                                <h1>سرویس ها</h1>
+                                <div th:each="document :${servicesList}">
+                                    <div class="row newsRow">
+                                        <div class="col-md-1"><i th:class="${document.cssClass}"  style="font-size: 20px;"></i></div>
+                                        <div class="col-md-10">
+                                            <div>
+                                                <a class="documentTitle" th:href="@{/admin/editor/showPost(documentId=${document.id})}">
+                                                    <span th:text="${document.getTitle()}"></span>
+                                                </a>
+                                            </div>
+                                            <div>
+                                                <span class="documentDescription" th:text="${document.description}"></span>
+                                                <span class="documentDescription"> - گروه </span>
+                                                <span class="documentDescription" th:text="${document.getWorkGroups()[0].getName()}"></span>
+                                            </div>
+                                            <div class="topic-date">
+
+
+                                                <span class="dateToConvert" th:text="${document.editDate}"></span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div style="text-align: left;">
+                                    <a class="documentTitle" th:href="@{/more(type=764)}" style="text-align: left;"> ادامه مطالب<span><i class="fas fa-arrow-left"></i></span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</section>
+<div th:replace="Layout :: footer"></div>
+<script>
+    $(document).ready(function() {
+        console.log($('#numberOfGroups'));
+        if($('#numberOfGroups')!= null){
+            $.ajax({
+                url: "REST/panel/numberOfGroups",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                success: function () {
+
+                }
+
+            }).done(function (data) {
+
+                $('#numberOfGroups').text(data.code);
+
+
+            });//end of done ajax
+            $.ajax({
+                url: "REST/panel/numberOfDocuments",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                success: function () {
+
+                }
+
+            }).done(function (data) {
+
+                $('#numberOfDocuments').text(data.code);
+
+
+            });//end of done ajax
+            $.ajax({
+                url: "REST/panel/numberOfComments",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                success: function () {
+
+                }
+
+            }).done(function (data) {
+
+                $('#numberOfComments').text(data.code);
+
+
+            });//end of done ajax
+            $.ajax({
+                url: "REST/panel/numberOfNewDocuments",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                success: function () {
+
+                }
+
+            }).done(function (data) {
+
+                $('#numberOfNewDocuments').text(data.code);
+
+
+            });//end of done ajax
+            $.ajax({
+                url: "REST/panel/numberOfGroupDocuments",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                success: function () {
+
+                }
+
+            }).done(function (data) {
+
+                $('#numberOfGroupDocuments').text(data.code);
+
+
+            });//end of done ajax
+            $.ajax({
+                url: "REST/panel/numberOfNewComments",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                success: function () {
+
+                }
+
+            }).done(function (data) {
+
+                $('#numberOfNewComments').text(data.code);
+
+
+            });//end of done ajax numberOfNewDirect
+            $.ajax({
+                url: "REST/panel/numberOfNewDirect",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                success: function () {
+
+                }
+
+            }).done(function (data) {
+
+                $('#numberOfNewDirect').text(data.code);
+
+
+            });//end of done ajax numberOfNewDirect
+        }//end of if
+
+        // change dates to shamsi function
+
+        //for each field with dateToConvert class change date to shamsi
+        $('.dateToConvert').each(function(){
+            $(this).text(date2convert($(this).text()));
+        });
+
+    });//end of ready
+</script>
+</body>
+</html>

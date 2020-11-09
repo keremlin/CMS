@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:replace="Layout :: head"></div>
+    <title>Title</title>
+</head>
+<body>
+<section>
+    <div th:replace="Layout :: header(${loggedUser},${isAuth})"></div>
+</section>
+<div class="container-fluid minHeight">
+    <div class="row">
+
+            <div class="d-none d-lg-block d-md-none col-lg-1"></div>
+            <div class="col-lg-10 col-md-12">
+                <div th:if="${isAmarAdmin==true}" class="row">
+                    <div class="col-md-7"></div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2">
+                        <a  href="../admin/olapGroups?id=2951&filterId=-1"><div class="single-button"><div><i class="fas fa-users-cog"></i></div><span></span>دسترسی ها</span></div></a>
+                    </div>
+                    
+                </div>
+                <p style="margin-right:20px;"><span style="color:green;">لیست گزارشات:</span></p>
+        <div class="row">
+            <div class="col-lg-10 col-md-12">
+               
+            </div>
+        </div>
+               
+                <div th:if="${linkList!=null}" class="row" style="margin-top: 30px;">
+                    
+                    <div class="col-md-11">
+                        <div style="float:left;">
+                            <span style="color:green;">فیلتر : </span>
+                            <select id="Year" name="sample" class="filter" >
+                                <option value="">انتخاب سال</option>
+                                <option value="1397">1397</option>
+                                <option value="1398">1398</option>
+                                <option value="1399">1399</option>
+                                <option value="1400">1400</option>
+                            </select>
+                            <select id="Month" name="sample"  class="filter">
+                                <option value="">انتخاب ماه</option>
+                                <option value="سال">کل سال</option>
+                                <option value="فروردين">فروردين</option>
+                                <option value="ارديبهشت">ارديبهشت</option>
+                                <option value="خرداد">خرداد</option>
+                                <option value="تير">تير</option>
+                                <option value="مرداد">مرداد</option>
+                                <option value="شهريور">شهريور</option>
+                                <option value="مهر">مهر</option>
+                                <option value="آبان">آبان</option>
+                                <option value="آذر">آذر</option>
+                                <option value="دي">دي</option>
+                                <option value="بهمن">بهمن</option>
+                                <option value="اسفند">اسفند</option>
+                            </select>
+                            <select id="Type" name="sample"  class="filter">
+                                <option value="">نوع</option>
+                                <option value="فوت">فوت</option>
+                                <option value="ولادت">ولادت</option>
+                                <option value="ازدواج">ازدواج-طلاق</option>
+                            </select>
+                        </div>
+                        <script>
+                            $('.filter').on("change", function() {
+                                 var value = this.value.toLowerCase();
+                                 var value1=$('#Year').val().toLowerCase();
+                                 var value2=$('#Month').val().toLowerCase();
+                                 var value3=$('#Type').val().toLowerCase();
+                                 value=value1+" "+value2+" "+value3;
+                                 console.log(value);
+                                 var filter = $.trim(value.toLowerCase());
+                                 console.log(filter);
+                                 count = 0;
+                                 var length = $.trim(value.length);
+                                 if (length > 1) {
+                                     var filter_tags = filter.split(" ");
+                                     var filter_tags_length = filter_tags.length;
+                                     console.log(filter_tags);
+                                     $("#mainTable tr:gt(0)").each(function () {
+                                         count++;
+                                         i = 0;
+                                         matches = 0;
+                                         c = 0;
+                                         var temp_filter_tags=JSON.parse(JSON.stringify(filter_tags));//$.extend(filter_tags);
+                                         console.log('the array is ----------------------------------------------------------------')
+                                         console.log(temp_filter_tags);
+                                         var temp_filter_tags_length=filter_tags_length;
+                                         $(this).find('td').each(function () {
+                                             var $this = $(this);
+                                             var lenght_td = $this.parents('tr').find('td').length;
+                                             i++;
+                                             
+                                             $.each(temp_filter_tags, function (i, a_filter) {
+                                                 console.log('test: '+a_filter);
+                                                 if ($this.text().toLowerCase().indexOf(a_filter) !== -1) {
+                                                     console.log('match: ' +$this.text().toLowerCase()+' with '+a_filter);
+                                                     temp_filter_tags[i]='#@$';
+                                                     c++;
+                                                     if (c == filter_tags_length) {
+                                                         matches = 1;
+                                                     }
+                                                 }
+                                             });
+                                              console.log(matches);
+                                             if (i == lenght_td) {
+                                                 if (matches > 0) {
+                                                     $(this).parents("tr").removeClass("hidden");
+                                                 } else {
+                                                     $(this).parents("tr").addClass("hidden");
+                                                 }
+                                             }
+                                         });
+                                         console.log('next'+count);
+                                     });
+                                 } else {
+                                     $("#mainTable td").parent("tr").removeClass("hidden");
+                                 }
+                              });
+                        </script>
+                        <table id="mainTable"  class="tables table-striped adminTable">
+                            <tr>
+                                <th>نام</th>
+                                <th>تاریخ گزارش گیری</th>
+                                <th>شروع گزارش</th>
+                                <th>خاتمه گزارش</th>
+
+                                <th>عملیات</th>
+                            </tr>
+                            <tr th:each="linker :${linkList}">
+                                <td><span th:text="${linker.title}">name</span></td>
+                                <td><span th:text="${linker.dateCreated}">description</span></td>
+                                <td><span th:text="${linker.dateRange}">owner</span></td>
+                                <td><span th:text="${linker.dateRangeEnd}">owner</span></td>
+
+                                <td>
+                                    
+                                    <a th:if="${isAmarAdmin==true}" th:href="@{../admin/removeExcel(id=${linker.id})}"><i class="fas fa-trash-alt" style="color:#4b9ade;"></i></a>
+                                    <a target="_blank" th:href="@{../admin/viewExcel(id=${linker.id})}"><i class="far fa-list-alt" style="color:#4b9ade;"></i></a>
+
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+                <div th:if="${isAmarAdmin==true}" class="row" style="margin-top: 30px;">
+                    <div class=col-md-1></div>
+                    <div class=col-md-11>
+
+                        <form method="POST" class="fr" enctype="multipart/form-data" id="fileUploadForm">
+                            <table>
+                                <tr>
+                                    <td><form:label style="color:Green;" path="file">بارگزاری گزارش جدید (فایل اکسل) : </form:label></td>
+
+                                </tr>
+                                <tr>
+                                    <td><input type="file" name="file" value="انتخاب فایل" id="upload"/></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        
+                                        <button id="uploadButton" type="submit">تایید فایل</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="statusBar"></span>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            
+
+                        </form>
+                    </div>
+                </div>
+    </div>
+
+    </div>
+</div>
+<section>
+    <div th:replace="Layout :: footer"></div>s
+</section>
+<script>
+    $(document).on('submit','.fr',function(e) {
+        e.preventDefault();
+        // lock the button
+        $('#uploadButton').prop('disabled','true');
+        $('#uploadButton').text('در حال بارگزاری...');
+        $('#uploadButton').css("color","#D3D3D3");
+        //regx for testing name of file to dont be in persian
+        var reg = /[\u0600-\u06ff]|[\u0750-\u077f]|[\ufb50-\ufc3f]|[\ufe70-\ufefc]/i;
+        //find file name
+        var filename="";
+        var fullPath = document.getElementById('upload').value;
+        if (fullPath) {
+            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+             filename = fullPath.substring(startIndex);
+            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                filename = filename.substring(1);
+            }
+        }
+        if($('#documentId')==null || $('#documentId').val()==0){
+            $('.statusBar').text('برای بارگذاری فایل ابتدا سند را ذخیره نمایید')
+            showAlert("خطا : برای بارگذاری فایل ابتدا سند را ذخیره نمایید",10000);
+            return;
+        }else if(reg.test(filename)) {
+            $('.statusBar').text('نام فایل نباید فارسی باشد');
+            showAlert("نام فایل نباید فارسی باشد",10000);
+            return;
+        }
+        var form = $('#fileUploadForm')[0];
+        var data = new FormData(form);
+        $.ajax({
+            url : '../../admin/uploadExcelFile',
+            enctype:'multipart/form-data',
+            data : data,
+            processData : false,
+            //dataType:"json",
+            //contentType:"application/json",
+            contentType : false,
+            type : 'POST',
+            success : function(data) {
+                showStatus("فایل با موفقیت بارگزاری شد",10000);
+                $('.statusBar').text('فایل با موفقیت بارگزاری شد');
+                setTimeout(function(){
+                    location.reload();
+                },3000)
+            },
+            error : function(err) {
+                showAlert("خطا : فایل بارگذاری نشد",10000);
+                $('.statusBar').text('خطا : فایل بارگذاری نشد');
+                console.log("File upload : "+err);
+            }
+        }).done(function(){
+            //$('#fileListRow').append("<p>"+data.name+"</p>");
+        });
+        setTimeout(function(){
+            $('#uploadButton').prop('disabled',false);
+            $('#uploadButton').text('تایید فایل');
+            $('#uploadButton').css("color","#000000");             
+        },2000);
+        $('#your_target_input').attr('value', '');
+        $('#fileUploadForm').val('').clone(true); 
+    });
+</script>
+</body>
+</html>

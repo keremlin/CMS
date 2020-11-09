@@ -1,0 +1,37 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:tiles="http://www.thymeleaf.org">
+<head>
+    <title th:text="${pageTitle}">Messages : Create</title>
+    <div th:replace="Layout :: head"></div>
+</head>
+<body>
+<div th:replace="Layout :: header(${user},${isAuth})"></div>
+<div class="container-fluid">
+    <div class="row" style="min-height: 0px;"></div>
+    <div class="row">
+        <div class="col-sm-1 col-xs-0"></div>
+        <div class="col-sm-10 col-xs-12 blog">
+            <div class="row">
+                <div tiles:fragment="content" class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-2 col-lg-1 col-xs-0"></div>
+                        <div class="col-sm-10 col-lg-7 col-xs-12 login-box">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="newsHeader"><h1><i class="fas fa-ban"></i>ورود غیر مجاز</h1></div>
+                                </div>
+                            </div>
+                            <h3>شما مجاز به استفاده از این صفحه یا منبع نمی باشید</h3>
+                        </div>
+                        <div class="col-sm-3 col-lg-4 col-xs-0"></div>
+
+
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-1 col-xs-0"></div>
+    </div>
+</div>
+<div th:replace="Layout::footer"></div>
+</body>
+</html>

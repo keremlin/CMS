@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:replace="Layout :: head"></div>
+    <title>Title</title>
+</head>
+<body>
+<section>
+    <div th:replace="Layout :: header(${loggedUser},${isAuth})"></div>
+</section>
+<div class="container-fluid minHeight">
+    <div class="row">
+
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-2">
+                        <a  href="../admin/addUser"><div class="single-button"><div><i class="fas fa-user-plus"></i></div><span>کاربر جدید</span></div></a>
+                    </div>
+                    <div class="col-md-7 search-record">
+
+                    </div>
+                </div>
+                <div th:if="${roleList!=null}" class="row">
+                    <div class="col-md-1">
+
+                    </div>
+                    <div class="col-md-10">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table  class="tables table-striped adminTable">
+                                    <tr>
+                                        <th>نام</th>
+                                        <th>نقش</th>
+                                        <th>عملیات</th>
+                                    </tr>
+                                    <tr th:each="role :${roleList}">
+                                        <td><span th:text="${role.name}"></span></td>
+                                        <td><span th:text="${role.name}"></span></td>
+
+                                        <td><i class="fas fa-trash-alt" style="color:#4b9ade;"></i> <i class="fas fa-user-edit" style="color:#4b9ade;"></i> <i class="fas fa-ban" style="color:#4b9ade;"></i></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+    </div>
+
+    </div>
+</div>
+<section>
+    <div th:replace="Layout :: footer"></div>s
+</section>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="Layout :: head"></div>
+    <title th:text="${pageTitle}"></title>
+</head>
+<body>
+<div th:replace="Layout :: header(user=${msg},isAuth=${isAuth})"></div>
+<section>
+
+    <div class="container-fluid">
+        <div class="row" style="min-height: 0px;"></div>
+        <div class="row">
+            <div class="col-sm-1 col-xs-0"></div>
+            <div class="col-sm-10 col-xs-12 blog">
+                <div class="row">
+
+                    <div class="col-md-6 col-sm-12 col-xs-12">
+                        <div class=" row firstMenu firstMenuBG2">
+                            <div class="firstMenu20">
+                            </div>
+                            <div class="firstMenu70">
+                                <h1>دانلود ویدئو</h1>
+
+                                <div th:each="document :${documentList}">
+                                    <div>
+                                        <a class="documentTitle" th:href="@{/admin/editor/showPost(documentId=${document.id})}">
+                                            <span th:text="${document.getTitle()}"></span>
+                                        </a>
+                                        <span class="documentDescription" th:text="${document.description}"></span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</section>
+<div th:replace="Layout :: footer"></div>
+</body>
+</html>

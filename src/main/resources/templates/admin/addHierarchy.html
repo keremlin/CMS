@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:replace="Layout :: head"></div>
+    <title>سلسله مراتب جدید</title>
+</head>
+<body>
+<section>
+    <div th:replace="Layout :: header(${loggedUser},${isAuth})"></div>
+</section>
+<div class="container-fluid minHeight">
+    <div class="row">
+        <div class="col-md-3">
+
+        </div>
+        <div class="col-md-6">
+            <form action="#" method="post" th:action="@{/admin/addHierarchy}" th:object="${obj}" id="userForm">
+                <div class="inlineBlock">
+                    <div class="form-group">
+                        <label for="name">نام سلسله جدید</label>
+                        <input class="form-control" type="text" id="name" name="name" th:field="*{title}">
+
+                    </div>
+                    <div class="form-group">
+                        <label for="icon">نشانه</label>
+
+
+
+                        <select name="sample" id="icon" class="fa" th:field="*{icon}">
+                            <option value="">----</option>
+                            <option value="fa fa-passport">&#xf5ab;</option>
+                            <option value="fa fa-file-word">&#xf1c2;</option>
+                            <option value="fa fa-file-upload">&#xf574;</option>
+                            <option value="fa fa-file-medical">&#xf477;</option>
+                            <option value="fa fa-file-download">&#xf477;</option>
+
+                        </select>
+                    </div>
+                    <input type="hidden" th:field="*{id}">
+                    <input class="form-control" type="submit" >
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<section>
+    <div th:replace="Layout :: footer"></div>s
+</section>
+<script>
+    $(document).ready(function()
+    {
+        $("#userForm").validate();
+        jQuery('#name').rules('add', Vname);
+        
+    });
+</script>
+</body>
+</html>

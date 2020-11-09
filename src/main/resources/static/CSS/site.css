@@ -1,0 +1,503 @@
+body {
+    direction: rtl;
+    text-align: right;
+    font-size:90%;
+}
+.center {
+    margin: auto;
+    width: 50%;
+    border: 3px solid lightgray;
+    padding: 10px;
+  }
+.backg {
+    background: #125687 url(../images/pttern.png) repeat-x center;
+    min-height: 120px;
+    font-family: "Yekan";
+    direction: rtl;
+    margin-bottom: 30px;
+}
+.blog {
+    background-color: #ffffff;
+    /*border: 1px solid #a1cae7;*/
+    min-height: 75vh;
+    padding: 10px;
+}
+.viewHeader{
+    font-family: Yekan;
+    color: #053e77;
+    margin-top:25px;
+
+}
+.viewDescription{
+    font-family: Yekan;
+    margin-bottom: 25px;
+    color: #053e77;
+}
+.showPostBigContainer{
+    border :1px solid gray;
+    min-height: 75vh;
+}
+.minHeight{/*Public*/
+    min-height: 65vh;
+    margin-bottom: 25px;
+}
+.editPostBigContainer{
+    padding: 10px;
+}
+.topic-date{
+    text-align: left;
+    font-size: 14px;
+    line-height: 14px;
+    direction: ltr;
+}
+.footerbg {
+    background-color: #125687;
+    min-height: 40px;
+    min-width: 100%;
+    text-align: center;
+    display: inline-block;
+    padding: 22px;
+    font-family: Yekan;
+    color: white;
+}
+/* Tell Quill not to scroll */
+#editor-container {
+    height: 100%;
+    min-height: 100%;
+    padding: 10px;
+    display:flex;
+    flex-direction:column;
+}
+#editor-container .ql-editor {
+    font-size: 18px;
+    overflow-y: visible;
+    flex:1;
+}
+.saveDocumentHeader{
+    margin-bottom: 30px;
+    margin-top: 20px;
+}
+/* Specify our own scrolling container */
+
+.scroller {
+    /*overflow-y: auto;*/
+}
+#fileListRow{
+    margin:30px;
+
+}
+.firstMenu {
+    font-family: Yekan;
+    padding-top: 30px;
+    min-height: 177px;
+    min-width: 100%;
+    background-color: lightblue;
+}
+.firstMenuBG1{
+    background: url("../images/backcontetnt33.png") no-repeat right top;
+}
+.firstMenuBG2{
+    background: url("../images/backcontetnt3.png") no-repeat right top;
+}
+.firstMenuBG3{
+    background: url("../images/backcontetnt3.png") no-repeat right top;
+}
+.firstMenuBG4{
+    background: url("../images/backcontetnt1.png") no-repeat right top;
+}
+.firstMenuBG5{
+    background: url("../images/backcontetnt33.png") no-repeat right top;
+}
+.firstMenu300 {
+    min-width: 40%;
+    min-height: 100px;
+}
+.firstMenu700 {
+    width: 60%;
+    min-height: 100px;
+    color: #4b6eaf;
+}
+
+.firstMenu700 li {
+    padding-bottom:20px;
+    font-size:0.9em;
+    padding-right: 5px;
+    list-style-type: none;
+}
+.firstMenu700 ul{
+    padding-inline-start: 10px;
+}
+.firstMenu700 h1{
+    padding-bottom: 10px;
+    font-size:1.2em;
+    text-align: center;
+}
+
+.firstMenu20 {
+    min-width: 25%;
+    min-height:100px;
+}
+
+.firstMenu70 {
+    width: 75%;
+    min-height: 100px;
+    color: #4b6eaf;
+}
+.firstMenu707{
+    width: 100%;
+}
+.firstMenu70 li {
+    padding-bottom:20px;
+    font-size:0.9em;
+    padding-right: 5px;
+    list-style-type: none;
+}
+.firstMenu70 ul{
+    padding-inline-start: 10px;
+}
+.firstMenu70 h1{
+    padding-bottom: 10px;
+    font-size:1.2em;
+    text-align: center;
+}
+.firstMenu70 .documentDescription{
+    font-size:0.8em;
+    color:gray;
+}
+.firstMenu70 .documentTitle{
+    font-size:1em;
+
+}
+
+.admin-icon{
+    padding-top:50px;
+}
+.admin-icon-container:hover{
+    background-color: #c8d1e6;
+}
+.admin-icon-container{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+.admin-border{
+    border-left: 1px solid #75715e ;
+    border-right: 1px solid #75715e ;
+    width: 100%;
+    heigh:100%;
+    min-height: 70vh;
+}
+.admin-icon i{
+    font-size: 80px;
+
+}
+.admin-icon i:hover{
+
+}
+.admin-icon span{
+    margin-top:10px;
+}
+.single-button{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    border:1px solid #66d9ef;
+    padding:5px;
+    box-shadow: 10px 10px 5px #bfbba7;
+}
+.single-button :hover{
+
+}
+.search-record input,.search-record select{
+    margin :10px;
+    width:100%;
+}
+.search-record span{
+
+}
+.hidden {
+    display:none;
+}
+.search-record .col-md-4{
+    text-align: left;
+    padding-top:10px;
+}
+.single-button i{
+    font-size: 50px;
+    color: #4b9ade;
+
+}
+
+.newsRow{
+    border:1px solid #bfcbe2;
+    margin:5px;
+    padding: 5px;
+    background-color: #f5f5f5;
+    max-width: 350px;
+}
+.newsRow:hover{
+    background-color: #b1bacf;
+}
+.selectedRow{
+    background-color: coral;
+}
+.mainMenuRow
+{
+    margin:0.9%;
+    padding: 0.9%;
+    font-size: 1.1vw;
+}
+@media screen and (min-width: 1200px) {
+  /* set the maxmimum of mainMenu font size */
+  .mainMenuRow {
+     font-size: 13px;
+  }
+}
+
+.mainMenuIcon{
+    margin-left:5px;
+    margin-bottom: 7px;
+}
+.newsFrame{
+    padding:40px 0 0 0;
+    font-family: Yekan;
+    border: 0px solid #bfcbe2;
+    min-height:250px;
+    margin: 0 0 0 0;
+    width:100%;
+
+}
+.newsHeader{
+    background-color: #125687;
+    color:white;
+    line-height: 20px;
+    min-width: 100%;
+    padding-right:5px;
+}
+.newsHeader h1 {
+    font-size: 17px;
+}
+.newsBox{
+    border:1px solid #cddde7;
+    min-height:99px;
+    padding: 0 10px 0 0;
+    margin :10px 0 0 0;
+
+}
+.nav-link{
+    min-height: 10em;
+    display: table-cell;
+    vertical-align: middle
+}
+.fa-check,.fa-calendar-alt, .fa-cloud-download-alt{
+
+    margin:0 0 0 7px;
+}
+.fa-margin{
+    margin:0 0 0 3px;
+}
+.login-box{
+    border: 1px solid lightgray;
+    padding:10px;
+    font-family: Yekan;
+    margin-top:40px;
+
+}
+.login-box legend{
+    margin: 10px;
+}
+.login-box .newsHeader{
+    margin-bottom: 20px;
+}
+.tables {
+    border:1px solid blue;
+    font-family: Yekan;
+}
+.tables tr{
+    border:1px solid black;
+}
+.tables td{
+    padding:0 30px 0 30px;
+}
+.tables th{
+    padding:0 30px 0 30px;
+}
+.inlineBlock{
+    margin: auto;
+    width: 70%;
+    padding: 10px;
+}
+.adminTable{
+    margin-top:30px;
+}
+
+.excelTable{
+    font-family: Yekan;
+    border:1px solid blue;
+}
+.excelTable td{
+    padding:0 2px 0 2px;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    text-align: center;
+}
+.excelTable .hideRightBorder{
+    border-right:0px solid white;
+}
+
+.editPostBottom{
+    margin-bottom: 25px;
+    padding: 10px;
+    background-color: #eae8e8;
+    border: 1px solid lightgray;
+}
+
+.fileTableRow{
+    border-bottom: solid lightGray 1px;
+    padding :5px;
+    text-align: left;
+
+}
+#filesTable{
+    width:100%;
+
+}
+/* Make the image fully responsive */
+.carousel-inner img {
+    width: 100%;
+    height: 100%;
+  }
+.bottom-button{
+    background-color: white;
+    margin-bottom: 10px;
+}
+/* status bar ---------------------------------------------*/
+.statusbar {
+    position: fixed;
+    bottom: 15px;
+    left: 0px;
+    right: 0px;
+    height: 50px;
+    padding: 5px;
+    text-align: center;
+    font-weight:900 ;
+
+
+    color: white;
+    border: solid 1px lightgray;
+
+    opacity: .70;
+    filter: alpha(opacity=70);
+    z-index: 200;
+
+    overflow: hidden;
+    overflow-y: auto;
+}
+.barGreen{
+    background: green;
+}
+.barRed{
+    background: red;
+}
+.statusbarhighlight {
+    font-weight: bold;
+    background-color: khaki;
+    color: Maroon;
+    border: solid 1px silver;
+}
+.statusBar{
+    color :green;
+    width: 100%;
+    text-align: left;
+    margin: 10px;
+}
+ .error{
+    color:red;
+
+}
+.disabledLink{
+    color:#83878a;
+}
+.enabledLink{
+    color: #4b9ade;
+}
+.icon-size{
+    font-size:25px;
+}
+.commentRow{
+    margin-top:20px;
+    margin-bottom:20px;
+    background-color:#dcdcdc ;
+}
+.commentRow:hover{
+    background-color:#cccccc ;
+}
+.commentTitle{
+    background-color:darkgray;
+}
+#commentText{
+    margin-top:20px;
+    margin-bottom: 10px;
+}
+.button{
+    background-color: #0066cc;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+.button:hover{
+    background-color: #4b9ade;
+}
+.userPanelSignIn{
+    color:Green;
+    font-size:12px;
+    text-align: center;
+}
+#numberOfNewDocuments{
+    color:white;
+    background-color: red;
+}
+#numberOfNewComments{
+    color:white;
+    background-color:green;
+}
+#numberOfNewDirect{
+    color:white;
+    background-color:purple;
+}
+#composeContainer{
+    
+}
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted #555; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
